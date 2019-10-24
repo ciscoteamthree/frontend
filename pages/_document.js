@@ -19,6 +19,13 @@ export default class Default extends Document {
             href="https://cdn.rawgit.com/h-ibaldo/Raleway_Fixed_Numerals/master/css/rawline.css"
             rel="stylesheet"
           />
+          <link
+            rel="stylesheet"
+            href="https://code.s4d.io/widget-space/production/main.css"
+          />
+
+          <script src="https://code.s4d.io/widget-space/production/bundle.js"></script>
+          <script src="https://code.s4d.io/widget-recents/production/bundle.js"></script>
           <style>{`
             body {
               margin: 0px;
