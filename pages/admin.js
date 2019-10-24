@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import Column from '../components/Column';
 import AdminPanel from '../components/AdminPanel';
-import Agenda from '../components/Dropzone';
+import Agenda from '../components/Agenda';
 import styled from 'styled-components';
 
 const ColumnContainer = styled.div`
@@ -12,15 +12,36 @@ const ColumnContainer = styled.div`
   grid-column-gap: 5px;
 `;
 
-const Admin = () => (
-  <ColumnContainer>
-    <Column background="white">
-      <AdminPanel />
-    </Column>
-    <Column background="white">
-      <Agenda />
-    </Column>
-  </ColumnContainer>
-);
+class Admin extends React.Component {
+    state = {
+        agenda: null
+    }
+
+    constructor(props) {
+        super(props);
+        this.setAgenda = this.setAgenda.bind(this)
+    }
+
+    setAgenda = (agenda) => {
+        this.setState({
+            agenda
+        })
+    }
+
+
+    render() {
+        const { agenda } = this.state;
+        return (
+        <ColumnContainer>
+            <Column background="white">
+              <AdminPanel setAgenda={this.setAgenda}/>
+            </Column>
+            <Column background="white">
+              <Agenda agenda={agenda} />
+            </Column>
+          </ColumnContainer>
+        );
+    }
+}
 
 export default Admin;

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+import Slice from './Slice';
 
 const Panel = styled.div`
   background: #eee;
@@ -10,6 +11,8 @@ const Panel = styled.div`
 
 class Agenda extends React.Component {
   render() {
+    const { agenda } = this.props;
+      console.log(agenda)
     return (
       <>
         <Panel>
@@ -17,6 +20,9 @@ class Agenda extends React.Component {
         </Panel>
         <Panel>
           <h3>Agenda</h3>
+          { agenda && agenda.map(slice =>
+            <Slice title={slice.title} description={slice.description} duration={slice.duration} color={slice.duration}/>
+          )}
         </Panel>
       </>
     );

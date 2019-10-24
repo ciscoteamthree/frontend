@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import io from 'socket.io-client';
 
 const Panel = styled.div`
   background: #eee;
@@ -9,10 +10,27 @@ const Panel = styled.div`
 
 class AdminPanel extends React.Component {
   state = {
+    wsSocket: null,
     templates: []
   };
+  componentDidMount() {
+    const socket = io('http://localhost:8000');
+    socket.on('templates', (templates) => {
+        this.setState({
+            templates
+        })
+        console.log("templates", templates)
+    });
+    socket.on('currentMeeting', (currentMeeting) => {
+        console.log("current meeting", currentMeeting)
+    });
+  }
+
   render() {
-    const templates = this.state.templates.map(template => <h2>Something</h2>);
+    const { setAgenda } = this.props;
+      const templates = this.state.templates.map(template => (
+          <button onClick={() => setAgenda(template.agenda)}>{template.title}</button>
+      ));
     return (
       <>
         <Panel>
@@ -20,6 +38,9 @@ class AdminPanel extends React.Component {
         </Panel>
         <Panel>
           <h3>Templates</h3>
+          {
+              templates
+          }
         </Panel>
       </>
     );
