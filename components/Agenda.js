@@ -38,8 +38,9 @@ const Agenda = props => {
       <SortablePane
         direction="vertical"
         margin={20}
-        onDragStart={() => console.log('Start')}
-        onDragStop={() => console.log('Stop')}
+        onDragStart={() => console.log('DRAG START')}
+        onDragStop={() => console.log('DRAG STOP')}
+        onTouchStart={() => console.log('TOUCH START')}
       >
         {slices}
       </SortablePane>
