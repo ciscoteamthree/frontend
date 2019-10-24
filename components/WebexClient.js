@@ -12,7 +12,6 @@ const WebexClient = () => {
   useEffect(() => {
     const socket = io('https://e479bf03.ngrok.io');
     socket.on('token', token => {
-      console.log('token', token);
       setToken(token);
     });
     socket.on('auth_missing', () => {
