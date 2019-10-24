@@ -14,6 +14,12 @@ const Template = styled.div`
   width: 20%;
 `;
 
+const TextOverflow = styled.div`
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`
+
 class AdminPanel extends React.Component {
   state = {
     wsSocket: null,
@@ -34,30 +40,47 @@ class AdminPanel extends React.Component {
 
   render() {
     const { setAgenda } = this.props;
-      console.log(this.state.templates);
       const templates = this.state.templates.map(template => (
           <Template>
-              <div><h3>{template.title}</h3></div>
+            <Flex column full contentStretch>
+            <div>
+              <div><h3><TextOverflow>{template.title}</TextOverflow></h3></div>
               <hr />
-              <div>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              {template.description}</div>
-              <div>
+              <div>{template.description}</div>
+            </div>
+          <Flex column style={{ height: '100%'}}>
+          <Flex full column center style={{
+              height: '150px',
+              marginTop: '10px',
+              opacity: 0.25,
+              justifyContent: 'flex-end'
+          }}>
                   {
-                      template.agenda.map(slice => {
-                        <span key={`agenda-key-${slice.title}`} class="md-badge md-badge--blue">{slice}</span>
+                      template.agenda.slice(0, 3).map(slice => {
+                          return (
+                              <span key={`agenda-key-${slice.title}`} class="md-badge" style={{
+                                  backgroundColor: slice.color,
+                                  width: '80%',
+                                  padding: '10px',
+                                  marginBottom: '10px',
+                                  height: '2rem'
+                              }}><TextOverflow>{slice.title}</TextOverflow></span>
+
+                          )
                       })
                   }
+              </Flex>
+              <div style={{ textAlign: 'center', marginTop: '8px' }}>
+                  <button type="button" onClick={() => setAgenda(template.agenda)} class="md-button" style={{ backgroundColor: '#00a0d1', color: '#fff'}}>Use template</button>
               </div>
-              <div style={{ textAlign: 'center', marginTop: '13px' }}>
-                  <button type="button" onClick={() => setAgenda(template.agenda)} class="md-button">Use template</button>
-              </div>
+            </Flex>
+            </Flex>
           </Template>
       ));
     return (
         <Panel>
           <h1>Templates</h1>
-          <Flex full justifyAround>
+          <Flex full justifyAround style={{ marginTop: '20px'}}>
           {
               templates
           }
