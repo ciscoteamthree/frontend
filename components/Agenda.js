@@ -35,7 +35,12 @@ const Agenda = props => {
     });
   return (
     <div style={{ padding: '10px' }}>
-      <SortablePane direction="vertical" margin={20}>
+      <SortablePane
+        direction="vertical"
+        margin={20}
+        onDragStart={() => console.log('Start')}
+        onDragStop={() => console.log('Stop')}
+      >
         {slices}
       </SortablePane>
     </div>
