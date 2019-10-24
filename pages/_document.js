@@ -17,10 +17,10 @@ export default class Default extends Document {
           />
           <style>{`
             body {
-              margin: 0;
+              margin: 0px;
               height: 100%;
               width: 100%;
-              padding: 0;
+              padding: 0px;
               font-size: 16px;
               color: rgba(0, 0, 0, 0.87);
               font-smoothing: antialiased;
