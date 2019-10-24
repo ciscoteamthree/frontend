@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@momentum-ui/react": "^23.0.8",
-    "interactjs": "^1.6.2",
     "moment": "^2.24.0",
     "next": "9.1.1",
     "react": "16.11.0",
