@@ -1,11 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import io from 'socket.io-client';
+import Flex from 'styled-flex-component';
+//import { Card, CardSection } from '@momentum-ui/react';
 
 const Panel = styled.div`
-  background: #eee;
-  margin-top: 5px;
   padding: 20px;
+`;
+
+const Template = styled.div`
+  padding: 20px;
+  background-color: white;
+  width: 20%;
 `;
 
 class AdminPanel extends React.Component {
@@ -29,20 +35,24 @@ class AdminPanel extends React.Component {
   render() {
     const { setAgenda } = this.props;
       const templates = this.state.templates.map(template => (
-          <button onClick={() => setAgenda(template.agenda)}>{template.title}</button>
+          <Template>
+              <div><h3>{template.title}</h3></div>
+              <hr />
+              <div>Description... {template.description}</div>
+              <div>Agenda</div>
+              <div>Button</div>
+          </Template>
       ));
+    // <button onClick={() => setAgenda(template.agenda)}>{template.title}</button>
     return (
-      <>
         <Panel>
-          <h2>AdminPanel</h2>
-        </Panel>
-        <Panel>
-          <h3>Templates</h3>
+          <h1>Templates</h1>
+          <Flex full justifyAround>
           {
               templates
           }
+        </Flex>
         </Panel>
-      </>
     );
   }
 }

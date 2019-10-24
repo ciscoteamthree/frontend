@@ -12,6 +12,10 @@ export default class Default extends Document {
             content="width=device-width, initial-scale=1, maximum-scale=1"
           />
           <link
+            href="/css/momentum-ui.min.css"
+            rel="stylesheet"
+          />
+          <link
             href="https://cdn.rawgit.com/h-ibaldo/Raleway_Fixed_Numerals/master/css/rawline.css"
             rel="stylesheet"
           />
@@ -23,6 +27,7 @@ export default class Default extends Document {
               padding: 0px;
               font-size: 16px;
               color: rgba(0, 0, 0, 0.87);
+              background-color: #eeeeee !important;
               font-smoothing: antialiased;
               word-break: break-word;
               font-family: rawline;
@@ -48,6 +53,12 @@ export default class Default extends Document {
 
             h1,h2,h3,h4 {
               font-weight: 500;
+            }
+
+            .gridColumn {
+                height: 100vh;
+                padding: 0 !important;
+
             }
           `}</style>
         </Head>

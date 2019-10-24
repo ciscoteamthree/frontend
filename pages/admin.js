@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Column from '../components/Column';
 import AdminPanel from '../components/AdminPanel';
 import Agenda from '../components/Agenda';
+import Header from '../components/Header';
 import styled from 'styled-components';
 
 const ColumnContainer = styled.div`
@@ -32,6 +33,19 @@ class Admin extends React.Component {
     render() {
         const { agenda } = this.state;
         return (
+        <div className="show-grid" >
+            <div>
+              <div className="columns small-8 medium-10 gridColumn">
+                <Header />
+                <AdminPanel setAgenda={this.setAgenda}/>
+              </div>
+              <div className="columns small-4 medium-2" style={{ height: '100vh' }}>
+                <Agenda agenda={agenda} />
+              </div>
+          </div>
+        </div>
+        );
+        /*
         <ColumnContainer>
             <Column background="white">
               <AdminPanel setAgenda={this.setAgenda}/>
@@ -41,6 +55,7 @@ class Admin extends React.Component {
             </Column>
           </ColumnContainer>
         );
+        */
     }
 }
 
