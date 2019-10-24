@@ -25,7 +25,7 @@ const Agenda = props => {
       console.log(slice);
       return (
         <PaneWrapper
-          key={slice.title}
+          key={slice.id}
           defaultSize={{ width: '100%', height: 120 }}
           style={{ background: slice.color }}
         >
