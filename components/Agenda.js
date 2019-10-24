@@ -1,32 +1,45 @@
 import React from 'react';
 import styled from 'styled-components';
+import Flex from 'styled-flex-component';
 import moment from 'moment';
-import Slice from './Slice';
+import { SortablePane, Pane } from 'react-sortable-pane';
 
-const Panel = styled.div`
-  background: #eee;
-  margin-top: 5px;
-  padding: 20px;
+const PaneWrapper = styled(Pane)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: solid 1px #ddd;
+  background: ${props => props.background};
 `;
 
-class Agenda extends React.Component {
-  render() {
-    const { agenda } = this.props;
-      console.log(agenda)
-    return (
-      <>
-        <Panel>
-          <h2>{moment().format('HH:mm')}</h2>
-        </Panel>
-        <Panel>
-          <h3>Agenda</h3>
-          { agenda && agenda.map(slice =>
-            <Slice title={slice.title} description={slice.description} duration={slice.duration} color={slice.duration}/>
-          )}
-        </Panel>
-      </>
-    );
-  }
-}
+const TextStyle = styled.h3`
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+const Agenda = props => {
+  const { agenda } = props;
+  const slices =
+    agenda &&
+    agenda.map(slice => {
+      console.log(slice);
+      return (
+        <PaneWrapper
+          key={slice.title}
+          defaultSize={{ width: '100%', height: 120 }}
+          style={{ background: slice.color }}
+        >
+          <TextStyle key={slice.id}>{slice.title}</TextStyle>
+        </PaneWrapper>
+      );
+    });
+  return (
+    <div style={{ padding: '10px' }}>
+      <SortablePane direction="vertical" margin={20}>
+        {slices}
+      </SortablePane>
+    </div>
+  );
+};
 
 export default Agenda;
