@@ -34,16 +34,26 @@ class AdminPanel extends React.Component {
 
   render() {
     const { setAgenda } = this.props;
+      console.log(this.state.templates);
       const templates = this.state.templates.map(template => (
           <Template>
               <div><h3>{template.title}</h3></div>
               <hr />
-              <div>Description... {template.description}</div>
-              <div>Agenda</div>
-              <div>Button</div>
+              <div>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              {template.description}</div>
+              <div>
+                  {
+                      template.agenda.map(slice => {
+                        <span key={`agenda-key-${slice.title}`} class="md-badge md-badge--blue">{slice}</span>
+                      })
+                  }
+              </div>
+              <div style={{ textAlign: 'center', marginTop: '13px' }}>
+                  <button type="button" onClick={() => setAgenda(template.agenda)} class="md-button">Use template</button>
+              </div>
           </Template>
       ));
-    // <button onClick={() => setAgenda(template.agenda)}>{template.title}</button>
     return (
         <Panel>
           <h1>Templates</h1>
