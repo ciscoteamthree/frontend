@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Column = props => (
-  <div style={{ width: props.width }}>
+  <div style={props.style}>
     <a>{props.text}</a>
   </div>
 );

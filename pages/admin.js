@@ -3,13 +3,13 @@ import Head from 'next/head';
 import Column from '../components/Column';
 
 const Admin = () => (
-  <div>
+  <div style={{display: 'grid', gridTemplateColumns: '8fr 2fr', gridTemplateRows: '1fr', gridColumnGap: '5px'}}>
     <Head>
       <title>Admin</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
-    <Column width={'80%'} text="Hei" />
-    <Column width={'20%'} text="hehe" />
+    <Column style={{background: 'red'}} text="Hei" />
+    <Column style={{background: 'blue'}} text="hehe" />
   </div>
 );
 
