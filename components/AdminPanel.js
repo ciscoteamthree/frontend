@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import io from 'socket.io-client';
 import Flex from 'styled-flex-component';
 import { WS_URL } from '../config';
-//import { Card, CardSection } from '@momentum-ui/react';
+import TimePicker from 'react-time-picker';
 
-const Panel = styled.div`
+const Section = styled.div`
   padding: 20px;
 `;
 
@@ -97,12 +97,24 @@ class AdminPanel extends React.Component {
       </Template>
     ));
     return (
-      <Panel>
-        <h1>Templates</h1>
-        <Flex full justifyAround style={{ marginTop: '20px' }}>
-          {templates}
-        </Flex>
-      </Panel>
+      <Flex full column>
+        <Section>
+          <h1>Meeting Title</h1>
+          <div className="md-input-group medium-6">
+            <input className="md-input" id="normalInput" type="text" />
+          </div>
+        </Section>
+        <Section>
+          <h1>Start Time</h1>
+          <Datetime dateFormat={false} />
+        </Section>
+        <Section>
+          <h1>Templates</h1>
+          <Flex full justifyAround style={{ marginTop: '20px' }}>
+            {templates}
+          </Flex>
+        </Section>
+      </Flex>
     );
   }
 }
