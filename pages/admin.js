@@ -1,17 +1,19 @@
 import React from 'react';
 import Router from 'next/router';
 import { withRouter } from 'next/router';
+import moment from 'moment';
 import AdminPanel from '../components/AdminPanel';
 import TeamPicker from '../components/TeamPicker';
 import Agenda from '../components/Agenda';
 import Header from '../components/Header';
 import Clock from '../components/Clock';
+import { DATE_FORMAT } from '../config';
 
 class Admin extends React.Component {
   state = {
     agenda: null,
     title: null,
-    startTime: null,
+    startTime: moment().minutes(0).seconds(0).add('hours', 1).format(DATE_FORMAT),
     titleError: null,
     timeError: null,
     agendaError: null,
@@ -61,13 +63,15 @@ class Admin extends React.Component {
     }
     const meeting = {
       title,
-      startTime,
-      agenda
+      agenda,
+      startTime: moment().add('seconds', 10).format(DATE_FORMAT).toString()
     };
+    console.log("startmeeting socket", socket);
+    console.log("emitting meeting", meeting);
+    socket.emit('editMeeting', meeting);
     Router.push({
       pathname: '/'
     });
-    socket.emit('editMeeting', meeting);
   };
 
   setTeamId = teamId => {
