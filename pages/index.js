@@ -4,10 +4,8 @@ import WebexClient from '../components/WebexClient';
 import MeetingWait from '../components/MeetingWait';
 import Agenda from '../components/Agenda';
 import moment from 'moment';
-import Clock from '../components/Clock';
-import SensorData from '../components/SensorData';
-import { DATE_FORMAT } from '../config';
 import styled from 'styled-components';
+import MiniHeader from '../components/MiniHeader';
 
 const test = {
   id: 1,
@@ -81,32 +79,26 @@ const Client = ({ currentMeeting, token, sensorData }) => {
     ? currentMeeting.agenda.reduce((a, b) => a + b.duration, 0)
     : 0;
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '8fr 2fr',
-        gridTemplateRows: '1fr',
-        gridColumnGap: '5px',
-        height: '100vh'
-      }}
-    >
-      <Head>
-        <title>Home</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      {meetingReady(currentMeeting) ? (
-        <WebexClient token={token} />
-      ) : (
-        <MeetingWait meeting={currentMeeting} />
-      )}
+    <div className="show-grid">
+      <div className="columns small-8 medium-10 gridColumn">
+        {meetingReady(currentMeeting) ? (
+          <WebexClient token={token} />
+        ) : (
+          <MeetingWait meeting={currentMeeting} />
+        )}
+      </div>
       <div>
-        <SensorData sensorData={sensorData} />
-        <Clock />
-        <Done timeElapsed={timeElapsed} totalDuration={totalDuration} />
-        <Agenda
-          disabled={true}
-          agenda={currentMeeting ? currentMeeting.agenda : []}
-        />
+        <div
+          className="columns small-4 medium-2 gridColumn"
+          style={{ height: '100vh' }}
+        >
+          <MiniHeader sensorData={sensorData} />
+          <Done timeElapsed={timeElapsed} totalDuration={totalDuration} />
+          <Agenda
+            disabled={true}
+            agenda={currentMeeting ? currentMeeting.agenda : []}
+          />
+        </div>
       </div>
     </div>
   );

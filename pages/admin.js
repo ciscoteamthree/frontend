@@ -6,14 +6,18 @@ import AdminPanel from '../components/AdminPanel';
 import TeamPicker from '../components/TeamPicker';
 import Agenda from '../components/Agenda';
 import Header from '../components/Header';
-import Clock from '../components/Clock';
 import { DATE_FORMAT } from '../config';
+import MiniHeader from '../components/MiniHeader';
 
 class Admin extends React.Component {
   state = {
     agenda: null,
     title: null,
-    startTime: moment().minutes(0).seconds(0).add('hours', 1).format(DATE_FORMAT),
+    startTime: moment()
+      .minutes(0)
+      .seconds(0)
+      .add('hours', 1)
+      .format(DATE_FORMAT),
     titleError: null,
     timeError: null,
     agendaError: null,
@@ -64,10 +68,13 @@ class Admin extends React.Component {
     const meeting = {
       title,
       agenda,
-      startTime: moment().add('seconds', 10).format(DATE_FORMAT).toString()
+      startTime: moment()
+        .add('seconds', 10)
+        .format(DATE_FORMAT)
+        .toString()
     };
-    console.log("startmeeting socket", socket);
-    console.log("emitting meeting", meeting);
+    console.log('startmeeting socket', socket);
+    console.log('emitting meeting', meeting);
     socket.emit('editMeeting', meeting);
     Router.push({
       pathname: '/'
@@ -80,13 +87,13 @@ class Admin extends React.Component {
 
   render() {
     const { agenda, titleError, timeError, teamId, agendaError } = this.state;
-    const { socket, templates, currentMeeting } = this.props;
+    const { socket, templates, sensorData } = this.props;
     return (
       <div className="show-grid">
         <div>
           <div className="columns small-8 medium-10 gridColumn">
             <Header startMeeting={this.startMeeting} />
-            {teamId ? (
+            {!teamId ? (
               <AdminPanel
                 socket={socket}
                 setAgenda={this.setAgenda}
@@ -110,7 +117,7 @@ class Admin extends React.Component {
             className="columns small-4 medium-2 gridColumn"
             style={{ height: '100vh' }}
           >
-            <Clock />
+            <MiniHeader sensorData={sensorData} />
             <Agenda agenda={agenda || []} setAgenda={this.setAgenda} />
           </div>
         </div>
