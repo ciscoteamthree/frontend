@@ -22,98 +22,127 @@ const SliceTitle = styled.ul`
   font-size: 2rem;
 `;
 
-
 const minDuration = 10;
 const maxDuration = 60;
 
-const SortableItem = SortableElement(({ slice, onSliceTitleClick, onSliceTitleChange, onSliceTitleSave, onSliceDurationClick, onSliceDurationChange, onSliceDurationSave } ) => {
-    const isEditingTitle = "editingTitle" in slice && slice.editingTitle;
-    const isEditingDuration = "editingDuration" in slice && slice.editingDuration;
+const SortableItem = SortableElement(
+  ({
+    slice,
+    onSliceTitleClick,
+    onSliceTitleChange,
+    onSliceTitleSave,
+    onSliceDurationClick,
+    onSliceDurationChange,
+    onSliceDurationSave
+  }) => {
+    const isEditingTitle = 'editingTitle' in slice && slice.editingTitle;
+    const isEditingDuration =
+      'editingDuration' in slice && slice.editingDuration;
     return (
-  <Element color={slice.color} duration={slice.duration}>
-    <Flex full justifyBetween column>
-      {
-          isEditingDuration
-          ?
-          <div className="md-input-group medium-3 slice-duration">
-            <input
-              className="md-input"
-              type="number"
-              placeholder={"" + minDuration}
-              min={"" + minDuration}
-              max={"" + maxDuration}
-              onChange={(e) => onSliceDurationChange(slice, e.target.value)}
-              onKeyDown={(e) => {
+      <Element color={slice.color} duration={slice.duration}>
+        <Flex full justifyBetween column>
+          {isEditingDuration ? (
+            <div className="md-input-group medium-3 slice-duration">
+              <input
+                className="md-input"
+                type="number"
+                placeholder={'' + minDuration}
+                min={'' + minDuration}
+                max={'' + maxDuration}
+                onChange={e => onSliceDurationChange(slice, e.target.value)}
+                onKeyDown={e => {
                   if (e.key === 'Enter') {
-                      onSliceDurationSave(slice);
+                    onSliceDurationSave(slice);
                   }
-              }}
-              value={slice.duration}
-              style={{
+                }}
+                value={slice.duration}
+                style={{
                   backgroundColor: 'white'
+                }}
+                onBlur={() => {
+                  onSliceDurationSave(slice);
+                }}
+                autoFocus
+              />
+            </div>
+          ) : (
+            <p onPointerDown={() => onSliceDurationClick(slice)}>
+              {slice.duration} min
+            </p>
+          )}
+          {isEditingTitle ? (
+            <div style={{ textAlign: 'center', color: 'white' }}>
+              <div className="md-input-group medium-12">
+                <input
+                  className="md-input"
+                  type="text"
+                  placeholder="Slice title"
+                  onChange={e => onSliceTitleChange(slice, e.target.value)}
+                  onKeyPress={e => {
+                    if (e.key === 'Enter') {
+                      onSliceTitleSave(slice);
+                    }
+                  }}
+                  value={slice.title}
+                  style={{
+                    backgroundColor: 'white'
+                  }}
+                  onBlur={() => onSliceTitleSave(slice)}
+                  autoFocus
+                />
+              </div>
+            </div>
+          ) : (
+            <div
+              onPointerDown={() => {
+                onSliceTitleClick(slice);
               }}
-              onBlur={() => {
-                  onSliceDurationSave(slice)
+              style={{
+                textAlign: 'center',
+                color: 'white',
+                overflow: 'hidden'
               }}
-              autoFocus
+            >
+              <SliceTitle>{slice.title}</SliceTitle>
+            </div>
+          )}
+          <p>{slice.duration} min</p>
+        </Flex>
+      </Element>
+    );
+  }
+);
+
+const SortableList = SortableContainer(
+  ({
+    slices,
+    onSliceTitleClick,
+    onSliceTitleChange,
+    onSliceTitleSave,
+    onSliceDurationClick,
+    onSliceDurationChange,
+    onSliceDurationSave
+  }) => {
+    return (
+      <List>
+        {slices &&
+          slices.map((slice, index) => (
+            <SortableItem
+              key={`item-${slice.id}`}
+              index={index}
+              onSliceTitleClick={onSliceTitleClick}
+              onSliceTitleChange={onSliceTitleChange}
+              onSliceTitleSave={onSliceTitleSave}
+              onSliceDurationClick={onSliceDurationClick}
+              onSliceDurationChange={onSliceDurationChange}
+              onSliceDurationSave={onSliceDurationSave}
+              slice={slice}
             />
-            </div>
-              : <p onPointerDown={() => onSliceDurationClick(slice)}>{slice.duration} min</p>
-
-      }
-      {
-          isEditingTitle
-          ? <div style={{ textAlign: 'center', color: 'white' }}>
-                  <div className="md-input-group medium-12">
-                    <input
-                      className="md-input"
-                      type="text"
-                      placeholder="Slice title"
-                      onChange={(e) => onSliceTitleChange(slice, e.target.value)}
-                      onKeyPress={(e) => {
-                          if (e.key === 'Enter') {
-                              onSliceTitleSave(slice);
-                          }
-                      }}
-                      value={slice.title}
-                      style={{
-                          backgroundColor: 'white'
-                      }}
-                      onBlur={() => onSliceTitleSave(slice) }
-                      autoFocus
-                    />
-                  </div>
-            </div>
-          : <div onPointerDown={() => {
-                  onSliceTitleClick(slice)
-              }}
-              style={{ textAlign: 'center', color: 'white', overflow: 'hidden' }}
-                >
-            <SliceTitle>{slice.title}</SliceTitle>
-          </div>
-        }
-        <p>{ slice.duration } min</p>
-    </Flex>
-  </Element>
-)});
-
-const SortableList = SortableContainer(({ slices, onSliceTitleClick, onSliceTitleChange, onSliceTitleSave, onSliceDurationClick, onSliceDurationChange, onSliceDurationSave}) => {
-  return (
-    <List>
-      {slices &&
-        slices.map((slice, index) => (
-            <SortableItem key={`item-${slice.id}`} index={index}
-            onSliceTitleClick={onSliceTitleClick}
-            onSliceTitleChange={onSliceTitleChange}
-            onSliceTitleSave={onSliceTitleSave}
-            onSliceDurationClick={onSliceDurationClick}
-            onSliceDurationChange={onSliceDurationChange}
-            onSliceDurationSave={onSliceDurationSave}
-            slice={slice} />
-        ))}
-    </List>
-  );
-});
+          ))}
+      </List>
+    );
+  }
+);
 
 class Agenda extends React.Component {
   constructor(props) {
@@ -137,79 +166,79 @@ class Agenda extends React.Component {
     }
   }
 
-  onSliceDurationClick = (slice) => {
+  onSliceDurationClick = slice => {
     const slices = this.state.slices;
     const foundIndex = slices.findIndex(x => x.id == slice.id);
-      if (foundIndex === -1) {
-          return;
-      }
+    if (foundIndex === -1) {
+      return;
+    }
     slice['editingDuration'] = true;
     slices[foundIndex] = slice;
-    this.setState({ slices })
-  }
+    this.setState({ slices });
+  };
 
-    onSliceDurationChange = (slice, duration) => {
-        const slices = this.state.slices;
-          //const foundSlice = this.state.slices.find(stateSlice => stateSlice.id == slice.id)
-        const foundIndex = slices.findIndex(x => x.id == slice.id);
-          if (foundIndex === -1) {
-              return;
-          }
-        if (duration < minDuration) {
-            duration = minDuration;
-        }
-        if (duration > maxDuration) {
-            duration = maxDuration;
-        }
-        slice['duration'] = duration;
-        slices[foundIndex] = slice;
-        this.setState({ slices })
+  onSliceDurationChange = (slice, duration) => {
+    const slices = this.state.slices;
+    //const foundSlice = this.state.slices.find(stateSlice => stateSlice.id == slice.id)
+    const foundIndex = slices.findIndex(x => x.id == slice.id);
+    if (foundIndex === -1) {
+      return;
     }
-
-    onSliceDurationSave = (slice) => {
-        const slices = this.state.slices;
-        const foundIndex = slices.findIndex(x => x.id == slice.id);
-          if (foundIndex === -1) {
-              return;
-          }
-        slice['editingDuration'] = false;
-        slices[foundIndex] = slice;
-        this.setState({ slices })
+    if (duration < minDuration) {
+      duration = minDuration;
     }
+    if (duration > maxDuration) {
+      duration = maxDuration;
+    }
+    slice['duration'] = duration;
+    slices[foundIndex] = slice;
+    this.setState({ slices });
+  };
 
-  onSliceTitleClick = (slice) => {
+  onSliceDurationSave = slice => {
     const slices = this.state.slices;
     const foundIndex = slices.findIndex(x => x.id == slice.id);
-      if (foundIndex === -1) {
-          return;
-      }
+    if (foundIndex === -1) {
+      return;
+    }
+    slice['editingDuration'] = false;
+    slices[foundIndex] = slice;
+    this.setState({ slices });
+  };
+
+  onSliceTitleClick = slice => {
+    const slices = this.state.slices;
+    const foundIndex = slices.findIndex(x => x.id == slice.id);
+    if (foundIndex === -1) {
+      return;
+    }
     slice['editingTitle'] = true;
     slices[foundIndex] = slice;
-    this.setState({ slices })
-  }
+    this.setState({ slices });
+  };
 
-    onSliceTitleChange = (slice, title) => {
-        const slices = this.state.slices;
-          //const foundSlice = this.state.slices.find(stateSlice => stateSlice.id == slice.id)
-        const foundIndex = slices.findIndex(x => x.id == slice.id);
-          if (foundIndex === -1) {
-              return;
-          }
-        slice['title'] = title;
-        slices[foundIndex] = slice;
-        this.setState({ slices })
+  onSliceTitleChange = (slice, title) => {
+    const slices = this.state.slices;
+    //const foundSlice = this.state.slices.find(stateSlice => stateSlice.id == slice.id)
+    const foundIndex = slices.findIndex(x => x.id == slice.id);
+    if (foundIndex === -1) {
+      return;
     }
+    slice['title'] = title;
+    slices[foundIndex] = slice;
+    this.setState({ slices });
+  };
 
-    onSliceTitleSave = (slice) => {
-        const slices = this.state.slices;
-        const foundIndex = slices.findIndex(x => x.id == slice.id);
-          if (foundIndex === -1) {
-              return;
-          }
-        slice['editingTitle'] = false;
-        slices[foundIndex] = slice;
-        this.setState({ slices })
+  onSliceTitleSave = slice => {
+    const slices = this.state.slices;
+    const foundIndex = slices.findIndex(x => x.id == slice.id);
+    if (foundIndex === -1) {
+      return;
     }
+    slice['editingTitle'] = false;
+    slices[foundIndex] = slice;
+    this.setState({ slices });
+  };
 
   // Will run on sort end, so the state updates its index
   onSortEnd = ({ oldIndex, newIndex }) => {
@@ -223,14 +252,19 @@ class Agenda extends React.Component {
 
   render() {
     const { slices } = this.state;
-      return <SortableList slices={slices}
-      onSliceTitleClick={this.onSliceTitleClick}
-      onSliceTitleChange={this.onSliceTitleChange}
-      onSliceTitleSave={this.onSliceTitleSave}
-      onSliceDurationClick={this.onSliceDurationClick}
-      onSliceDurationChange={this.onSliceDurationChange}
-      onSliceDurationSave={this.onSliceDurationSave}
-      distance={5} onSortEnd={this.onSortEnd} />;
+    return (
+      <SortableList
+        slices={slices}
+        onSliceTitleClick={this.onSliceTitleClick}
+        onSliceTitleChange={this.onSliceTitleChange}
+        onSliceTitleSave={this.onSliceTitleSave}
+        onSliceDurationClick={this.onSliceDurationClick}
+        onSliceDurationChange={this.onSliceDurationChange}
+        onSliceDurationSave={this.onSliceDurationSave}
+        distance={5}
+        onSortEnd={this.onSortEnd}
+      />
+    );
   }
 }
 
