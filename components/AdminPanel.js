@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import io from 'socket.io-client';
 import Flex from 'styled-flex-component';
 import { WS_URL } from '../config';
-import TimePicker from 'react-time-picker';
 
 const Section = styled.div`
   padding: 20px;
@@ -24,7 +23,7 @@ const TextOverflow = styled.div`
 class AdminPanel extends React.Component {
   state = {
     wsSocket: null,
-      templates: [],
+    templates: []
   };
   componentDidMount() {
     const socket = io(WS_URL);
@@ -39,7 +38,14 @@ class AdminPanel extends React.Component {
   }
 
   render() {
-    const { setAgenda, setTitle, setTime, titleError, timeError } = this.props;
+    const {
+      startTime,
+      setAgenda,
+      setTitle,
+      setTime,
+      titleError,
+      timeError
+    } = this.props;
     const templates = this.state.templates.map(template => (
       <Template key={template.title}>
         <Flex column full contentStretch>
@@ -89,24 +95,38 @@ class AdminPanel extends React.Component {
                 className="md-button"
                 style={{ backgroundColor: '#00a0d1', color: '#fff' }}
               >
-                Use template
+                Use
               </button>
             </div>
           </Flex>
         </Flex>
       </Template>
     ));
+
     return (
       <Flex full column>
         <Section>
           <h1>Meeting Title</h1>
           <div className="md-input-group medium-6">
-            <input className="md-input" id="normalInput" type="text" />
+            <input
+              className="md-input"
+              type="text"
+              placeholder="Møte"
+              value={this.props.title}
+              onChange={setTitle}
+            />
           </div>
         </Section>
         <Section>
           <h1>Start Time</h1>
-          <Datetime dateFormat={false} />
+          <div className="md-input-group medium-6">
+            <input
+              className="md-input"
+              type="text"
+              value={this.props.startTime}
+              onChange={setTime}
+            />
+          </div>
         </Section>
         <Section>
           <h1>Templates</h1>
