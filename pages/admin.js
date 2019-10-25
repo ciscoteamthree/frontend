@@ -32,7 +32,8 @@ class Admin extends React.Component {
     title: null,
     startTime: null,
     titleError: null,
-    timeError: null
+      timeError: null,
+      socket: null
   };
 
   constructor(props) {
@@ -41,6 +42,10 @@ class Admin extends React.Component {
     this.setTitle = this.setTitle.bind(this);
     this.setTime = this.setTime.bind(this);
     this.startMeeting = this.startMeeting.bind(this);
+    const socket = io(WS_URL);
+    this.state = {
+        socket
+    }
   }
 
   setAgenda = agenda => {
@@ -57,10 +62,9 @@ class Admin extends React.Component {
     this.setState({ startTime: event.target.value });
   }
 
-  startMeeting = () => {
-    const socket = io(WS_URL);
-    const { title, startTime, agenda } = this.state;
-    if (title === null || title == '') {
+    startMeeting = () => {
+        const { socket, title, time, agenda } = this.state;
+      if (title === null || title == '') {
       this.setState({ titleError: 'Title needs to be set' });
     }
     if (startTime === null || startTime == '') {
@@ -84,13 +88,14 @@ class Admin extends React.Component {
   };
 
   render() {
-    const { agenda, titleError, timeError } = this.state;
+    const { socket, agenda, titleError, timeError } = this.state;
     return (
       <div className="show-grid">
         <div>
           <div className="columns small-8 medium-10 gridColumn">
             <Header startMeeting={this.startMeeting} />
             <AdminPanel
+              socket={socket}
               setAgenda={this.setAgenda}
               setTitle={this.setTitle}
               title={this.state.title}

@@ -26,8 +26,9 @@ class AdminPanel extends React.Component {
     templates: []
   };
   componentDidMount() {
-    const socket = io(WS_URL);
+    const { socket } = this.props;
     socket.on('templates', templates => {
+      console.log("got templates", templates)
       this.setState({
         templates
       });
