@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import io from 'socket.io-client';
 import Column from '../components/Column';
 import AdminPanel from '../components/AdminPanel';
 import Agenda from '../components/Agenda';
