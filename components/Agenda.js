@@ -10,12 +10,13 @@ const Element = styled.li`
   padding: 10px;
   margin: 0;
   background: ${props => props.color};
-  height: ${props => props.duration * 15}px;
+  height: ${props => (props.duration / props.totalDuration) * 100}%;
 `;
 
 const List = styled.ul`
   padding: 0;
   margin: 0;
+  height: 90.5%;
 `;
 
 const SliceTitle = styled.ul`
@@ -28,6 +29,7 @@ const maxDuration = 60;
 const SortableItem = SortableElement(
   ({
     slice,
+      totalDuration,
     onSliceTitleClick,
     onSliceTitleChange,
     onSliceTitleSave,
@@ -39,7 +41,9 @@ const SortableItem = SortableElement(
     const isEditingDuration =
       'editingDuration' in slice && slice.editingDuration;
     return (
-      <Element color={slice.color} duration={slice.duration}>
+      <Element color={slice.color} duration={slice.duration}
+    totalDuration={totalDuration}
+      >
         <Flex full justifyBetween column>
           {isEditingDuration ? (
             <div className="md-input-group medium-3 slice-duration">
@@ -124,6 +128,7 @@ const SortableList = SortableContainer(
     onSliceDurationSave,
     disabled
   }) => {
+  const totalDuration = slices.reduce((a, b) => a + b.duration, 0);
     return (
       <List>
         {slices &&
@@ -139,12 +144,14 @@ const SortableList = SortableContainer(
               onSliceDurationSave={onSliceDurationSave}
               slice={slice}
               disabled={disabled}
+              totalDuration={totalDuration}
             />
           ))}
       </List>
     );
   }
 );
+
 
 class Agenda extends React.Component {
   constructor(props) {
