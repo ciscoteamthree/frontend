@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
 import Flex from 'styled-flex-component';
 
 const TeamPicker = props => {

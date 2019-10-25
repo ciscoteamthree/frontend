@@ -1,34 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import io from 'socket.io-client';
-import { WS_URL } from '../config';
 
-const Login = () => {
+const Login = ({ socket, token }) => {
   const router = useRouter();
   const code = router.query.code;
-  const [socket, setSocket] = useState();
   const [loginUrl, setLoginUrl] = useState();
-  const [token, setToken] = useState();
 
   useEffect(() => {
-    if (socket && code) {
-      socket.emit('oauth', code);
-    }
-    if (!socket) {
-      const _socket = io(WS_URL);
-      _socket.on('token', token => {
-        setToken(token);
-        setLoginUrl(null);
-        // Redirect away from login page
-        router.push(`/admin?token=${token}`);
-      });
-      _socket.on('auth_missing', url => {
-        setLoginUrl(url);
-      });
-      setSocket(_socket);
-    }
-  }, [code, socket]);
+    socket.emit('oauth', code);
+
+    socket.on('token', token => {
+      setLoginUrl(null);
+      // Redirect away from login page
+      router.push(`/admin?token=${token}`);
+    });
+    socket.on('auth_missing', url => {
+      setLoginUrl(url);
+    });
+  }, [code]);
 
   return (
     <div

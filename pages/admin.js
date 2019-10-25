@@ -1,32 +1,10 @@
 import React from 'react';
-import Head from 'next/head';
-import io from 'socket.io-client';
 import { withRouter } from 'next/router';
-import Column from '../components/Column';
 import AdminPanel from '../components/AdminPanel';
 import TeamPicker from '../components/TeamPicker';
 import Agenda from '../components/Agenda';
 import Header from '../components/Header';
-import styled from 'styled-components';
-import moment from 'moment';
-import { WS_URL } from '../config';
-
-const ColumnContainer = styled.div`
-  display: grid;
-  grid-template-columns: 8fr 2fr;
-  grid-template-rows: 1fr;
-  grid-column-gap: 5px;
-`;
-
-const ClockWrapper = styled.div`
-  width: 100%;
-  text-align: center;
-  font-size: 40px;
-  background: white;
-  height: 90px;
-`;
-
-const Clock = () => <ClockWrapper>{moment().format('HH:mm')}</ClockWrapper>;
+import Clock from '../components/Clock';
 
 class Admin extends React.Component {
   state = {
@@ -36,8 +14,7 @@ class Admin extends React.Component {
     titleError: null,
     timeError: null,
     agendaError: null,
-    teamId: null,
-    socket: null
+    teamId: null
   };
 
   constructor(props) {
@@ -46,10 +23,6 @@ class Admin extends React.Component {
     this.setTitle = this.setTitle.bind(this);
     this.setTime = this.setTime.bind(this);
     this.startMeeting = this.startMeeting.bind(this);
-    console.log("WS_URL", WS_URL)
-    const socket = io(WS_URL);
-    console.log("Started socket!")
-    this.state.socket = socket;
   }
 
   setAgenda = agenda => {
@@ -67,9 +40,10 @@ class Admin extends React.Component {
   }
 
   startMeeting = () => {
-    console.log("startmeeting state", this.state)
-    const { socket, title, startTime, agenda } = this.state;
-    let newState = {}
+    console.log('startmeeting state', this.state);
+    const { title, startTime, agenda } = this.state;
+    const { socket } = this.props;
+    let newState = {};
     newState.agendaError = agenda === null || agenda == '';
     newState.titleError = title === null || title == '';
     newState.timeError = startTime === null || startTime == '';
@@ -99,7 +73,8 @@ class Admin extends React.Component {
   };
 
   render() {
-    const { socket, agenda, titleError, timeError, teamId, agendaError } = this.state;
+    const { agenda, titleError, timeError, teamId, agendaError } = this.state;
+    const { socket, templates, currentMeeting } = this.props;
     return (
       <div className="show-grid">
         <div>
@@ -116,6 +91,7 @@ class Admin extends React.Component {
                 titleError={titleError}
                 timeError={timeError}
                 agendaError={agendaError}
+                templates={templates}
               />
             ) : (
               <TeamPicker

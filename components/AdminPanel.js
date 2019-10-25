@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import io from 'socket.io-client';
 import Flex from 'styled-flex-component';
-import { WS_URL } from '../config';
 
 const Section = styled.div`
   padding: 20px;
@@ -25,28 +23,10 @@ const TextOverflow = styled.div`
 `;
 
 const ErrorText = styled.div`
-  color: #FF5C4A;
+  color: #ff5c4a;
 `;
 
 class AdminPanel extends React.Component {
-  state = {
-    wsSocket: null,
-    templates: []
-  };
-  componentDidMount() {
-    const { socket } = this.props;
-    console.log("SOCKET adminpanel!", socket)
-    socket.on('templates', templates => {
-      console.log("got templates", templates)
-      this.setState({
-        templates
-      });
-    });
-    socket.on('currentMeeting', currentMeeting => {
-      console.log('current meeting', currentMeeting);
-    });
-  }
-
   render() {
     const {
       title,
@@ -55,10 +35,10 @@ class AdminPanel extends React.Component {
       setTitle,
       setTime,
       titleError,
-        timeError,
-        agendaError
+      timeError,
+      agendaError
     } = this.props;
-    const templates = this.state.templates.map(template => (
+    const templates = this.props.templates.map(template => (
       <Template key={template.title}>
         <Flex column full contentStretch>
           <div>
@@ -116,11 +96,10 @@ class AdminPanel extends React.Component {
     ));
 
     return (
-
       <Flex column>
         <Flex full row justifyAround>
-            <Section>
-                  <MeetingSetting>
+          <Section>
+            <MeetingSetting>
               <Flex full center column>
                 <div>
                   <h1>Meeting Title</h1>
@@ -132,65 +111,65 @@ class AdminPanel extends React.Component {
                       value={title}
                       onChange={setTitle}
                       style={{
-                          backgroundColor: 'white',
-                          border: titleError && '1px solid #D93820'
+                        backgroundColor: 'white',
+                        border: titleError && '1px solid #D93820'
                       }}
                     />
-                    { titleError &&
-                    <ErrorText>
-                        * This field is required.
-                    </ErrorText>
-                    }
+                    {titleError && (
+                      <ErrorText>* This field is required.</ErrorText>
+                    )}
                   </div>
                 </div>
-          </Flex>
-              </MeetingSetting>
-            </Section>
-            <Section>
-          <MeetingSetting>
+              </Flex>
+            </MeetingSetting>
+          </Section>
+          <Section>
+            <MeetingSetting>
               <Flex full center column>
                 <div>
-                  <h1 style={{
+                  <h1
+                    style={{
                       textAlign: 'left'
-                  }}>Start Time</h1>
-              <div className="md-input-group medium-12">
-                <input
-                  className="md-input"
-                  type="text"
-                  value={startTime}
-                  onChange={setTime}
+                    }}
+                  >
+                    Start Time
+                  </h1>
+                  <div className="md-input-group medium-12">
+                    <input
+                      className="md-input"
+                      type="text"
+                      value={startTime}
+                      onChange={setTime}
                       style={{
-                          backgroundColor: 'white',
-                          border: timeError && '1px solid #D93820'
-
+                        backgroundColor: 'white',
+                        border: timeError && '1px solid #D93820'
                       }}
-                />
-                { timeError &&
-                <ErrorText>
-                    * This field is required.
-                </ErrorText>
-                }
-              </div>
-            </div>
-          </Flex>
-          </MeetingSetting>
-            </Section>
+                    />
+                    {timeError && (
+                      <ErrorText>* This field is required.</ErrorText>
+                    )}
+                  </div>
+                </div>
+              </Flex>
+            </MeetingSetting>
+          </Section>
         </Flex>
         <Section>
           <h1>Templates</h1>
-          { agendaError &&
-          <ErrorText>
-              * You need to choose a template.
-          </ErrorText>
-          }
+          {agendaError && (
+            <ErrorText>* You need to choose a template.</ErrorText>
+          )}
           <Flex full justifyAround style={{ marginTop: '20px' }}>
-            {
-                templates.length === 0
-                    ? <i className="md-spinner md-spinner--28 md-spinner--blue" style={{
-                        fontSize: '86px'
-                    }}></i>
-                    : templates
-            }
+            {templates.length === 0 ? (
+              <i
+                className="md-spinner md-spinner--28 md-spinner--blue"
+                style={{
+                  fontSize: '86px'
+                }}
+              ></i>
+            ) : (
+              templates
+            )}
           </Flex>
         </Section>
       </Flex>
