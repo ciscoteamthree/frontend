@@ -7,6 +7,7 @@ import moment from 'moment';
 import Clock from '../components/Clock';
 import SensorData from '../components/SensorData';
 import { DATE_FORMAT } from '../config';
+import styled from 'styled-components';
 
 const test = {
   id: 1,
@@ -60,11 +61,15 @@ const Done = styled.div`
 `;
 
 const Client = ({ currentMeeting, token, sensorData }) => {
+  const [timeElapsed, setTimeElapsed] = useState(0);
   let interval;
 
   useEffect(() => {
     interval = setInterval(
-      () => setTimeElapsed(moment().diff(moment(currentMeeting.startTime))),
+      () =>
+        setTimeElapsed(
+          currentMeeting ? lmoment().diff(moment(currentMeeting.startTime)) : 0
+        ),
       1000
     );
   }, []);
@@ -72,10 +77,9 @@ const Client = ({ currentMeeting, token, sensorData }) => {
   const meetingReady = meeting => {
     return meeting && moment().isAfter(moment(meeting.startTime));
   };
-  const totalDuration = currentMeeting.agenda.reduce(
-    (a, b) => a + b.duration,
-    0
-  );
+  const totalDuration = currentMeeting
+    ? currentMeeting.agenda.reduce((a, b) => a + b.duration, 0)
+    : 0;
   return (
     <div
       style={{

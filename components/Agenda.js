@@ -19,7 +19,6 @@ const List = styled.ul`
   height: 90.5%;
 `;
 
-<<<<<<< HEAD
 const SliceTitle = styled.ul`
   font-size: 2rem;
 `;
