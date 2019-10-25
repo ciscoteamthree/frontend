@@ -51,7 +51,7 @@ const test = {
 
 const Done = styled.div`
   position: absolute;
-  width: 19.9%;
+  width: 100%;
   background: rgba(39, 39, 39, 0.6);
   border-bottom: 5px solid red;
   box-sizing: border-box;
