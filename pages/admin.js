@@ -47,7 +47,8 @@ class Admin extends React.Component {
   }
 
   startMeeting = () => {
-    const { title, startTime, agenda } = this.state;
+    console.log('startmeeting state', this.state);
+    const { title, startTime, agenda, teamId } = this.state;
     const { socket } = this.props;
     let newState = {};
     newState.agendaError = agenda === null || agenda == '';
@@ -71,7 +72,8 @@ class Admin extends React.Component {
       startTime: moment()
         .add('seconds', 10)
         .format(DATE_FORMAT)
-        .toString()
+        .toString(),
+      teamId
     };
     console.log('startmeeting socket', socket);
     console.log('emitting meeting', meeting);

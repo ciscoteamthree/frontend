@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { WS_URL } from '../config';
 
-const WebexClient = ({ token }) => {
+const WebexClient = ({ token, meeting }) => {
   useEffect(() => {
     const spaceWidget = document.getElementById('webex-widget');
     if (token) {
       ciscospark.widget(spaceWidget).spaceWidget({
         accessToken: token,
         destinationType: 'spaceId',
-        destinationId: spaceTredjePlass,
+        destinationId: meeting.teamId,
         initialActivity: 'meet',
         startCall: true
       });
