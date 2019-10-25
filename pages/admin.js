@@ -124,7 +124,7 @@ class Admin extends React.Component {
             style={{ height: '100vh' }}
           >
             <Clock />
-            <Agenda agenda={agenda} setAgenda={this.setAgenda} />
+            <Agenda agenda={agenda || []} setAgenda={this.setAgenda} />
           </div>
         </div>
       </div>

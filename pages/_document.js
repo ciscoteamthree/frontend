@@ -67,6 +67,16 @@ export default class Default extends Document {
               height: 100vh;
               padding: 0 !important;
             }
+
+            .ciscospark-recents-widget {
+              height: 100% !important;
+            }
+            .ciscospark-spaces-list-wrapper {
+              height: 100% !important;
+            }
+            .md-list-item__header {
+              color: black !important;
+            }
           `}</style>
         </Head>
         <body>
