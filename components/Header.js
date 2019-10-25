@@ -46,7 +46,7 @@ class Header extends React.Component {
             </div>
             <button
               type="button"
-              onClick={() => startMeeting()}
+              onClick={startMeeting}
               className="md-button"
               style={{ backgroundColor: '#24AB31', color: '#fff' }}
             >

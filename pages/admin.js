@@ -32,6 +32,21 @@ class Admin extends React.Component {
     this.startMeeting = this.startMeeting.bind(this);
   }
 
+  componentWillReceiveProps = newProps => {
+    if (
+      newProps.currentMeeting !== this.props.currentMeeting &&
+      newProps.currentMeeting
+    ) {
+      const currentMeeting = newProps.currentMeeting;
+      this.setState({
+        title: currentMeeting.title,
+        agenda: currentMeeting.agenda,
+        startTime: moment(currentMeeting.startTime),
+        teamId: currentMeeting.teamId
+      });
+    }
+  };
+
   setAgenda = agenda => {
     this.setState({
       agenda
@@ -69,18 +84,21 @@ class Admin extends React.Component {
     const meeting = {
       title,
       agenda,
-      startTime: moment()
-        .add('seconds', 10)
-        .format(DATE_FORMAT)
-        .toString(),
+      // StartTime for meeting that is in progress cannot be changed
+      startTime: this.props.currentMeeting
+        ? this.props.currentMeeting.startTime
+        : moment()
+            .add('seconds', 10)
+            .format(DATE_FORMAT)
+            .toString(),
       teamId
     };
     console.log('startmeeting socket', socket);
     console.log('emitting meeting', meeting);
     socket.emit('editMeeting', meeting);
-    Router.push({
-      pathname: '/'
-    });
+    // Router.push({
+    //   pathname: '/'
+    // });
   };
 
   setTeamId = teamId => {
@@ -89,13 +107,36 @@ class Admin extends React.Component {
 
   render() {
     const { agenda, titleError, timeError, teamId, agendaError } = this.state;
-    const { socket, templates, sensorData, user, token } = this.props;
+    const {
+      socket,
+      templates,
+      sensorData,
+      user,
+      token,
+      currentMeeting
+    } = this.props;
     return (
       <div className="show-grid">
         <div>
           <div className="columns small-8 medium-10 gridColumn">
             <Header startMeeting={this.startMeeting} user={user} />
-            {teamId ? (
+            {currentMeeting && (
+              <div>
+                Meeting in progress
+                <br />
+                <button
+                  type="button"
+                  onClick={() => {
+                    socket.emit('endMeeting');
+                  }}
+                  className="md-button"
+                  style={{ backgroundColor: '#24AB31', color: '#fff' }}
+                >
+                  End meeting
+                </button>
+              </div>
+            )}
+            {!currentMeeting && teamId && (
               <AdminPanel
                 socket={socket}
                 setAgenda={this.setAgenda}
@@ -108,9 +149,11 @@ class Admin extends React.Component {
                 agendaError={agendaError}
                 templates={templates}
               />
-            ) : (
+            )}
+            {!currentMeeting && !teamId && token && (
               <TeamPicker setTeamId={this.setTeamId} token={token} />
             )}
+            {!teamId && !token && <>You must log in</>}
           </div>
           <div
             className="columns small-4 medium-2 gridColumn"

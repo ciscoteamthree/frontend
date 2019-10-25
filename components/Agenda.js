@@ -181,14 +181,14 @@ class Agenda extends React.Component {
   }
 
   // Will check if the agenda needs an update
-  componentWillUpdate(nextProps, nextState, nextContext) {
+  componentWillReceiveProps(nextProps) {
     // Get all values from our state and from our new props
     const ourList = this.state.slices && this.state.slices.map(a => a.title);
     const newList = nextProps.agenda && nextProps.agenda.map(a => a.title);
 
     // Check if the a sorted version of our titles is equal to a
     // sorted version of the new list, if so, its the same list
-    if (!isEqual(sortBy(ourList), sortBy(newList))) {
+    if (this.props.disabled || !isEqual(sortBy(ourList), sortBy(newList))) {
       this.setState({ slices: nextProps.agenda });
     }
   }

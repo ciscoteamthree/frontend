@@ -95,7 +95,7 @@ const Client = ({ currentMeeting, token, sensorData }) => {
           <MiniHeader sensorData={sensorData} />
           <Done timeElapsed={timeElapsed} totalDuration={totalDuration} />
           <Agenda
-            disabled={true}
+            disabled
             agenda={currentMeeting ? currentMeeting.agenda : []}
           />
         </div>

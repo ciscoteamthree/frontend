@@ -17,6 +17,7 @@ class MyApp extends App {
     };
 
     socket.on('currentMeeting', currentMeeting => {
+      console.log('currentMeeting', currentMeeting);
       this.setState({ currentMeeting });
     });
     socket.on('templates', templates => {
