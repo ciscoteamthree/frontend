@@ -1,4 +1,5 @@
 import React from 'react';
+import Router from 'next/router';
 import { withRouter } from 'next/router';
 import moment from 'moment';
 import AdminPanel from '../components/AdminPanel';
@@ -42,7 +43,6 @@ class Admin extends React.Component {
   }
 
   startMeeting = () => {
-    console.log('startmeeting state', this.state);
     const { title, startTime, agenda } = this.state;
     const { socket } = this.props;
     let newState = {};
@@ -69,6 +69,9 @@ class Admin extends React.Component {
     console.log("startmeeting socket", socket);
     console.log("emitting meeting", meeting);
     socket.emit('editMeeting', meeting);
+    Router.push({
+      pathname: '/'
+    });
   };
 
   setTeamId = teamId => {
