@@ -111,7 +111,7 @@ class AdminPanel extends React.Component {
             <input
               className="md-input"
               type="text"
-              placeholder="Møte"
+              placeholder="Important meeting"
               value={this.props.title}
               onChange={setTitle}
             />
