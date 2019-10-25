@@ -15,6 +15,7 @@ const Clock = () => {
 
   const [time, setTime] = useState();
   useEffect(() => {
+    setTime(moment().format('HH:mm'));
     interval = setInterval(() => setTime(moment().format('HH:mm')), 10000);
   }, []);
   return <ClockWrapper>{time}</ClockWrapper>;

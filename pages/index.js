@@ -6,10 +6,12 @@ import Agenda from '../components/Agenda';
 import moment from 'moment';
 import Clock from '../components/Clock';
 import SensorData from '../components/SensorData';
+import { DATE_FORMAT } from '../config';
 
 const test = {
   id: 1,
   title: 'Scrum Retrospective',
+  startTime: '2019-10-25 20:00:00',
   description:
     'Post Scrum meeting facilitated by the Scrum Master where the team discusses the just-concluded sprint and determines what could be changed that might make the next sprint more productive.',
   agenda: [
@@ -26,7 +28,7 @@ const test = {
       title: 'What went well?',
       description:
         'Start the session on a positive note. Have each team member use green sticky notes to write down what they feel went well (one idea per sticky). As people post their stickies on the whiteboard, the facilitator should group similar or duplicate ideas together.\n\nDiscuss your ideas briefly as a team.',
-      duration: 15,
+      duration: 40,
       color: '#00b894'
     },
     {
@@ -48,10 +50,32 @@ const test = {
   ]
 };
 
+const Done = styled.div`
+  position: absolute;
+  width: 19.9%;
+  background: rgba(39, 39, 39, 0.6);
+  border-bottom: 5px solid red;
+  box-sizing: border-box;
+  height: ${props => (props.timeElapsed / 60000 / props.totalDuration) * 100}%;
+`;
+
 const Client = ({ currentMeeting, token, sensorData }) => {
+  let interval;
+
+  useEffect(() => {
+    interval = setInterval(
+      () => setTimeElapsed(moment().diff(moment(currentMeeting.startTime))),
+      1000
+    );
+  }, []);
+
   const meetingReady = meeting => {
     return meeting && moment().isAfter(moment(meeting.startTime));
   };
+  const totalDuration = currentMeeting.agenda.reduce(
+    (a, b) => a + b.duration,
+    0
+  );
   return (
     <div
       style={{
@@ -74,6 +98,7 @@ const Client = ({ currentMeeting, token, sensorData }) => {
       <div>
         <SensorData sensorData={sensorData} />
         <Clock />
+        <Done timeElapsed={timeElapsed} totalDuration={totalDuration} />
         <Agenda
           disabled={true}
           agenda={currentMeeting ? currentMeeting.agenda : []}
