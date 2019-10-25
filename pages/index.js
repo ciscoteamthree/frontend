@@ -8,7 +8,7 @@ import { WS_URL } from '../config';
 import moment from 'moment';
 
 const Client = () => {
-  const [socket, currentMeeting, setCurrentMeeting] = useState();
+  const [currentMeeting, setCurrentMeeting] = useState();
 
   useEffect(() => {
     const socket = io(WS_URL);
