@@ -55,7 +55,7 @@ class Agenda extends React.Component {
   // Will check if the agenda needs an update
   componentWillUpdate(nextProps, nextState, nextContext) {
     // Get all values from our state and from our new props
-    const ourList = this.state.slices.map(a => a.title);
+    const ourList = this.state.slices && this.state.slices.map(a => a.title);
     const newList = nextProps.agenda && nextProps.agenda.map(a => a.title);
 
     // Check if the a sorted version of our titles is equal to a

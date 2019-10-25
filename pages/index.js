@@ -56,13 +56,14 @@ const Client = () => {
   useEffect(() => {
     const socket = io(WS_URL);
     console.log(WS_URL);
+    console.log(moment().toISOString());
     socket.on('currentMeeting', meeting => {
       setCurrentMeeting(meeting);
     });
   }, []);
 
   const meetingReady = meeting => {
-    return meeting && moment().isAfter(meeting.startTime);
+    return meeting && moment().isAfter(moment(meeting.startTime));
   };
 
   return (
@@ -85,7 +86,9 @@ const Client = () => {
         <MeetingWait meeting={currentMeeting} />
       )}
       <div>
-        <Clock />
+        {
+          //<Clock />
+        }
         <Agenda
           disabled={true}
           agenda={currentMeeting ? currentMeeting.agenda : []}
