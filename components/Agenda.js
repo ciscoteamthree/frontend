@@ -51,7 +51,7 @@ class Agenda extends React.Component {
   componentWillUpdate(nextProps, nextState, nextContext) {
     // Get all values from our state and from our new props
     const ourList = this.state.slices.map(a => a.title);
-    const newList = nextProps.agenda.map(a => a.title);
+    const newList = nextProps.agenda && nextProps.agenda.map(a => a.title);
 
     // Check if the a sorted version of our titles is equal to a
     // sorted version of the new list, if so, its the same list
@@ -62,9 +62,12 @@ class Agenda extends React.Component {
 
   // Will run on sort end, so the state updates its index
   onSortEnd = ({ oldIndex, newIndex }) => {
-    this.setState({
-      slices: arrayMove(this.state.slices, oldIndex, newIndex)
-    });
+    this.setState(
+      {
+        slices: arrayMove(this.state.slices, oldIndex, newIndex)
+      },
+      () => this.props.setAgenda(this.state.slices)
+    );
   };
 
   render() {
