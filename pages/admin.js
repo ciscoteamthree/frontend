@@ -54,34 +54,32 @@ class Admin extends React.Component {
     });
   };
 
-  setTitle = title => {
-    this.setState({
-      title
-    });
-  };
+  setTitle(event) {
+    this.setState({ title: event.target.value });
+  }
 
-  setTime = time => {
-    this.setState({
-      time
-    });
-  };
+  setTime(event) {
+    this.setState({ startTime: event.target.value });
+  }
 
     startMeeting = () => {
         const { socket, title, time, agenda } = this.state;
-        if (title === null || title == '') {
-            this.setState({titleError: "Title needs to be set"})
-        }
-        if (time === null || time == '') {
-            this.setState({timeError: "Time needs to be set"})
-        }
-        if (title ===null || title == '' || time === null || time == '') {
-            return;
-        }
-        const meeting = {
-            title, time, agenda
-        }
-        socket.emit('editMeeting', meeting);
+    if (
+      title === null ||
+      title == '' ||
+      startTime === null ||
+      startTime == ''
+    ) {
+      return;
     }
+    const meeting = {
+      title,
+      startTime,
+      agenda
+    };
+    console.log(meeting);
+    socket.emit('editMeeting', meeting);
+  };
 
   render() {
     const { socket, agenda, titleError, timeError } = this.state;
@@ -90,14 +88,23 @@ class Admin extends React.Component {
         <div>
           <div className="columns small-8 medium-10 gridColumn">
             <Header startMeeting={this.startMeeting} />
-            <AdminPanel socket={socket} setAgenda={this.setAgenda} setTitle={this.setTitle} setTime={this.setTime} titleError={titleError} timeError={timeError}/>
+            <AdminPanel
+              socket={socket}
+              setAgenda={this.setAgenda}
+              setTitle={this.setTitle}
+              title={this.state.title}
+              setTime={this.setTime}
+              startTime={this.state.startTime}
+              titleError={titleError}
+              timeError={timeError}
+            />
           </div>
           <div
             className="columns small-4 medium-2 gridColumn"
             style={{ height: '100vh' }}
           >
             <Clock />
-            <Agenda agenda={agenda} />
+            <Agenda agenda={agenda} setAgenda={this.setAgenda} />
           </div>
         </div>
       </div>
