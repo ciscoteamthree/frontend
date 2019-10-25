@@ -3,10 +3,7 @@ import Head from 'next/head';
 import WebexClient from '../components/WebexClient';
 import MeetingWait from '../components/MeetingWait';
 import Agenda from '../components/Agenda';
-import io from 'socket.io-client';
-import { WS_URL } from '../config';
 import moment from 'moment';
-import styled from 'styled-components';
 import Clock from '../components/Clock';
 
 const test = {
@@ -50,18 +47,7 @@ const test = {
   ]
 };
 
-const Client = () => {
-  const [currentMeeting, setCurrentMeeting] = useState(test);
-
-  useEffect(() => {
-    const socket = io(WS_URL);
-    console.log(WS_URL);
-    console.log(moment().toISOString());
-    socket.on('currentMeeting', meeting => {
-      setCurrentMeeting(meeting);
-    });
-  }, []);
-
+const Client = ({ currentMeeting, token }) => {
   const meetingReady = meeting => {
     return meeting && moment().isAfter(moment(meeting.startTime));
   };
@@ -80,7 +66,7 @@ const Client = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {meetingReady(currentMeeting) ? (
-        <WebexClient />
+        <WebexClient token={token} />
       ) : (
         <MeetingWait meeting={currentMeeting} />
       )}

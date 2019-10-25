@@ -7,19 +7,7 @@ const spaceId3 =
 const spaceTredjePlass =
   'Y2lzY29zcGFyazovL2h0dHBzOi8vY29udi1hLndieDIuY29tL2NvbnZlcnNhdGlvbi9hcGkvdjEvY29udmVyc2F0aW9ucy8xMWVmYTY5MC1kZmQ0LTExZTktYTViMy02MzI4YTk1NDFjMTkvUk9PTS8xMWVmYTY5MC1kZmQ0LTExZTktYTViMy02MzI4YTk1NDFjMTk';
 
-const WebexClient = () => {
-  const [token, setToken] = useState();
-
-  useEffect(() => {
-    const socket = io(WS_URL);
-    socket.on('token', token => {
-      setToken(token);
-    });
-    socket.on('auth_missing', () => {
-      alert('auth missing');
-    });
-  }, []);
-
+const WebexClient = ({ token }) => {
   useEffect(() => {
     const spaceWidget = document.getElementById('webex-widget');
     if (token) {
@@ -32,6 +20,7 @@ const WebexClient = () => {
       });
     }
   }, [token]);
+
   return <div id="webex-widget" />;
 };
 
