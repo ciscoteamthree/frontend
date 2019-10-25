@@ -2,17 +2,15 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-const Login = ({ socket }) => {
+const Login = ({ socket, token }) => {
   const router = useRouter();
   const code = router.query.code;
   const [loginUrl, setLoginUrl] = useState();
-  const [token, setToken] = useState();
 
   useEffect(() => {
     socket.emit('oauth', code);
 
     socket.on('token', token => {
-      setToken(token);
       setLoginUrl(null);
       // Redirect away from login page
       router.push(`/admin?token=${token}`);

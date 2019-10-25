@@ -11,7 +11,8 @@ class MyApp extends App {
       socket,
       currentMeeting: null,
       templates: [],
-      token: null
+      token: null,
+      sensorData: null
     };
 
     socket.on('currentMeeting', currentMeeting => {
@@ -23,10 +24,13 @@ class MyApp extends App {
     socket.on('token', token => {
       this.setState({ token });
     });
+    socket.on('sensorData', sensorData => {
+      this.setState({ sensorData });
+    });
   }
   render() {
     const { Component, pageProps } = this.props;
-    const { socket, templates, currentMeeting, token } = this.state;
+    const { socket, templates, currentMeeting, token, sensorData } = this.state;
 
     return (
       <Component
@@ -35,6 +39,7 @@ class MyApp extends App {
         socket={socket}
         templates={templates}
         currentMeeting={currentMeeting}
+        sensorData={sensorData}
       />
     );
   }

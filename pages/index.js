@@ -5,6 +5,7 @@ import MeetingWait from '../components/MeetingWait';
 import Agenda from '../components/Agenda';
 import moment from 'moment';
 import Clock from '../components/Clock';
+import SensorData from '../components/SensorData';
 
 const test = {
   id: 1,
@@ -47,7 +48,7 @@ const test = {
   ]
 };
 
-const Client = ({ currentMeeting, token }) => {
+const Client = ({ currentMeeting, token, sensorData }) => {
   const meetingReady = meeting => {
     return meeting && moment().isAfter(moment(meeting.startTime));
   };
@@ -71,7 +72,8 @@ const Client = ({ currentMeeting, token }) => {
         <MeetingWait meeting={currentMeeting} />
       )}
       <div>
-        {<Clock />}
+        <SensorData sensorData={sensorData} />
+        <Clock />
         <Agenda
           disabled={true}
           agenda={currentMeeting ? currentMeeting.agenda : []}
