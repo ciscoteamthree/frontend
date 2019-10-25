@@ -10,6 +10,7 @@ import Header from '../components/Header';
 import styled from 'styled-components';
 import moment from 'moment';
 import { WS_URL } from '../config';
+import Clock from '../components/Clock';
 
 const ColumnContainer = styled.div`
   display: grid;
@@ -17,16 +18,6 @@ const ColumnContainer = styled.div`
   grid-template-rows: 1fr;
   grid-column-gap: 5px;
 `;
-
-const ClockWrapper = styled.div`
-  width: 100%;
-  text-align: center;
-  font-size: 40px;
-  background: white;
-  height: 90px;
-`;
-
-const Clock = () => <ClockWrapper>{moment().format('HH:mm')}</ClockWrapper>;
 
 class Admin extends React.Component {
   state = {
@@ -46,9 +37,9 @@ class Admin extends React.Component {
     this.setTitle = this.setTitle.bind(this);
     this.setTime = this.setTime.bind(this);
     this.startMeeting = this.startMeeting.bind(this);
-    console.log("WS_URL", WS_URL)
+    console.log('WS_URL', WS_URL);
     const socket = io(WS_URL);
-    console.log("Started socket!")
+    console.log('Started socket!');
     this.state.socket = socket;
   }
 
@@ -67,9 +58,9 @@ class Admin extends React.Component {
   }
 
   startMeeting = () => {
-    console.log("startmeeting state", this.state)
+    console.log('startmeeting state', this.state);
     const { socket, title, startTime, agenda } = this.state;
-    let newState = {}
+    let newState = {};
     newState.agendaError = agenda === null || agenda == '';
     newState.titleError = title === null || title == '';
     newState.timeError = startTime === null || startTime == '';
@@ -99,7 +90,14 @@ class Admin extends React.Component {
   };
 
   render() {
-    const { socket, agenda, titleError, timeError, teamId, agendaError } = this.state;
+    const {
+      socket,
+      agenda,
+      titleError,
+      timeError,
+      teamId,
+      agendaError
+    } = this.state;
     return (
       <div className="show-grid">
         <div>

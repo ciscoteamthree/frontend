@@ -28,12 +28,17 @@ const SortableItem = SortableElement(({ slice }) => (
   </Element>
 ));
 
-const SortableList = SortableContainer(({ slices }) => {
+const SortableList = SortableContainer(({ slices, disabled }) => {
   return (
     <List>
       {slices &&
         slices.map((slice, index) => (
-          <SortableItem key={`item-${slice.id}`} index={index} slice={slice} />
+          <SortableItem
+            disabled={disabled}
+            key={`item-${slice.id}`}
+            index={index}
+            slice={slice}
+          />
         ))}
     </List>
   );
@@ -72,7 +77,14 @@ class Agenda extends React.Component {
 
   render() {
     const { slices } = this.state;
-    return <SortableList slices={slices} onSortEnd={this.onSortEnd} />;
+    console.log(this.props);
+    return (
+      <SortableList
+        disabled={this.props.disabled}
+        slices={slices}
+        onSortEnd={this.onSortEnd}
+      />
+    );
   }
 }
 

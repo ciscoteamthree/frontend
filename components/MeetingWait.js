@@ -14,7 +14,7 @@ const MeetingWait = props => {
   return props.meeting ? (
     <Element>
       Meeting is starting in{' '}
-      {moment().diff(moment(meeting.startTime), 'minutes')}
+      {moment().diff(moment(props.meeting.startTime), 'minutes')}
     </Element>
   ) : (
     <Element>No meeting registered</Element>
