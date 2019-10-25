@@ -26,12 +26,11 @@ class AdminPanel extends React.Component {
     templates: []
   };
   componentDidMount() {
-    const socket = io('https://e479bf03.ngrok.io');
+    const socket = io('https://2a9d7c02.ngrok.io');
     socket.on('templates', templates => {
       this.setState({
         templates
       });
-      console.log('templates', templates);
     });
     socket.on('currentMeeting', currentMeeting => {
       console.log('current meeting', currentMeeting);
@@ -41,7 +40,7 @@ class AdminPanel extends React.Component {
   render() {
     const { setAgenda } = this.props;
     const templates = this.state.templates.map(template => (
-      <Template>
+      <Template key={template.title}>
         <Flex column full contentStretch>
           <div>
             <div>
@@ -68,7 +67,7 @@ class AdminPanel extends React.Component {
                 return (
                   <span
                     key={`agenda-key-${slice.title}`}
-                    class="md-badge"
+                    className="md-badge"
                     style={{
                       backgroundColor: slice.color,
                       width: '80%',
@@ -86,7 +85,7 @@ class AdminPanel extends React.Component {
               <button
                 type="button"
                 onClick={() => setAgenda(template.agenda)}
-                class="md-button"
+                className="md-button"
                 style={{ backgroundColor: '#00a0d1', color: '#fff' }}
               >
                 Use template

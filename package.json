@@ -10,11 +10,12 @@
   "dependencies": {
     "@ciscospark/widget-space": "^0.2.52",
     "@momentum-ui/react": "^23.0.8",
+    "array-move": "^2.2.0",
     "moment": "^2.24.0",
     "next": "9.1.1",
     "react": "16.11.0",
     "react-dom": "16.11.0",
-    "react-sortable-pane": "^1.1.0",
+    "react-sortable-hoc": "^1.10.1",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "styled-components": "^4.4.0",

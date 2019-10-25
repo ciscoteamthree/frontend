@@ -11,10 +11,7 @@ export default class Default extends Document {
             name="viewport"
             content="width=device-width, initial-scale=1, maximum-scale=1"
           />
-          <link
-            href="/css/momentum-ui.min.css"
-            rel="stylesheet"
-          />
+          <link href="/css/momentum-ui.min.css" rel="stylesheet" />
           <link
             href="https://cdn.rawgit.com/h-ibaldo/Raleway_Fixed_Numerals/master/css/rawline.css"
             rel="stylesheet"
@@ -62,10 +59,13 @@ export default class Default extends Document {
               font-weight: 500;
             }
 
-            .gridColumn {
-                height: 100vh;
-                padding: 0 !important;
+            ul {
+              list-style-type: none !important;
+            }
 
+            .gridColumn {
+              height: 100vh;
+              padding: 0 !important;
             }
           `}</style>
         </Head>

@@ -15,7 +15,7 @@ const Login = () => {
       socket.emit('oauth', code);
     }
     if (!socket) {
-      const _socket = io('https://e479bf03.ngrok.io');
+      const _socket = io('https://2a9d7c02.ngrok.io');
       _socket.on('token', token => {
         setToken(token);
         setLoginUrl(null);

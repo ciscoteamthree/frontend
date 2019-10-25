@@ -5,6 +5,7 @@ import AdminPanel from '../components/AdminPanel';
 import Agenda from '../components/Agenda';
 import Header from '../components/Header';
 import styled from 'styled-components';
+import moment from 'moment';
 
 const ColumnContainer = styled.div`
   display: grid;
@@ -13,50 +14,52 @@ const ColumnContainer = styled.div`
   grid-column-gap: 5px;
 `;
 
+const ClockWrapper = styled.div`
+  width: 100%;
+  text-align: center;
+  font-size: 40px;
+  background: white;
+  height: 90px;
+`;
+
+const Clock = () => <ClockWrapper>{moment().format('HH:mm')}</ClockWrapper>;
+
 class Admin extends React.Component {
-    state = {
-        agenda: null
-    }
+  state = {
+    agenda: null
+  };
 
-    constructor(props) {
-        super(props);
-        this.setAgenda = this.setAgenda.bind(this)
-    }
+  constructor(props) {
+    super(props);
+    this.setAgenda = this.setAgenda.bind(this);
+  }
 
-    setAgenda = (agenda) => {
-        this.setState({
-            agenda
-        })
-    }
+  setAgenda = agenda => {
+    this.setState({
+      agenda
+    });
+  };
 
-
-    render() {
-        const { agenda } = this.state;
-        return (
-        <div className="show-grid" >
-            <div>
-              <div className="columns small-8 medium-10 gridColumn">
-                <Header />
-                <AdminPanel setAgenda={this.setAgenda}/>
-              </div>
-              <div className="columns small-4 medium-2" style={{ height: '100vh' }}>
-                <Agenda agenda={agenda} />
-              </div>
+  render() {
+    const { agenda } = this.state;
+    return (
+      <div className="show-grid">
+        <div>
+          <div className="columns small-8 medium-10 gridColumn">
+            <Header />
+            <AdminPanel setAgenda={this.setAgenda} />
+          </div>
+          <div
+            className="columns small-4 medium-2 gridColumn"
+            style={{ height: '100vh' }}
+          >
+            <Clock />
+            <Agenda agenda={agenda} />
           </div>
         </div>
-        );
-        /*
-        <ColumnContainer>
-            <Column background="white">
-              <AdminPanel setAgenda={this.setAgenda}/>
-            </Column>
-            <Column background="white">
-              <Agenda agenda={agenda} />
-            </Column>
-          </ColumnContainer>
-        );
-        */
-    }
+      </div>
+    );
+  }
 }
 
 export default Admin;
