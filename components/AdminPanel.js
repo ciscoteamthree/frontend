@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import io from 'socket.io-client';
 import Flex from 'styled-flex-component';
+import { WS_URL } from '../config';
 //import { Card, CardSection } from '@momentum-ui/react';
 
 const Panel = styled.div`
@@ -23,10 +24,10 @@ const TextOverflow = styled.div`
 class AdminPanel extends React.Component {
   state = {
     wsSocket: null,
-    templates: []
+      templates: [],
   };
   componentDidMount() {
-    const socket = io('https://2a9d7c02.ngrok.io');
+    const socket = io(WS_URL);
     socket.on('templates', templates => {
       this.setState({
         templates
@@ -38,7 +39,7 @@ class AdminPanel extends React.Component {
   }
 
   render() {
-    const { setAgenda } = this.props;
+    const { setAgenda, setTitle, setTime, titleError, timeError } = this.props;
     const templates = this.state.templates.map(template => (
       <Template key={template.title}>
         <Flex column full contentStretch>
