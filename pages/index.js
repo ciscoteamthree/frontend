@@ -4,13 +4,14 @@ import WebexClient from '../components/WebexClient';
 import MeetingWait from '../components/MeetingWait';
 import Agenda from '../components/Agenda';
 import io from 'socket.io-client';
+import WS_URL from '../config';
 import moment from 'moment';
 
 const Client = () => {
-  const [currentMeeting, setCurrentMeeting] = useState();
+  const [socket, currentMeeting, setCurrentMeeting] = useState();
 
   useEffect(() => {
-    const socket = io('https://5b6b05d2.ngrok.io');
+    const socket = io(WS_URL);
     socket.on('currentMeeting', meeting => {
       setCurrentMeeting(meeting);
     });
