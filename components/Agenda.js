@@ -18,22 +18,99 @@ const List = styled.ul`
   margin: 0;
 `;
 
-const SortableItem = SortableElement(({ slice }) => (
+const SliceTitle = styled.ul`
+  font-size: 2rem;
+`;
+
+
+const minDuration = 10;
+const maxDuration = 60;
+
+const SortableItem = SortableElement(({ slice, onSliceTitleClick, onSliceTitleChange, onSliceTitleSave, onSliceDurationClick, onSliceDurationChange, onSliceDurationSave } ) => {
+    const isEditingTitle = "editingTitle" in slice && slice.editingTitle;
+    const isEditingDuration = "editingDuration" in slice && slice.editingDuration;
+    return (
   <Element color={slice.color} duration={slice.duration}>
     <Flex full justifyBetween column>
-      <p>{slice.duration} min</p>
-      <h1 style={{ textAlign: 'center', color: 'white' }}>{slice.title}</h1>
-      <p>{slice.duration} min</p>
+      {
+          isEditingDuration
+          ?
+          <div className="md-input-group medium-3 slice-duration">
+            <input
+              className="md-input"
+              type="number"
+              placeholder={"" + minDuration}
+              min={"" + minDuration}
+              max={"" + maxDuration}
+              onChange={(e) => onSliceDurationChange(slice, e.target.value)}
+              onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                      onSliceDurationSave(slice);
+                  }
+              }}
+              value={slice.duration}
+              style={{
+                  backgroundColor: 'white',
+                  height: '50px'
+              }}
+              onBlur={() => {
+                  //onSliceDurationSave(slice)
+              }}
+              autoFocus
+            />
+            </div>
+              : <p onPointerDown={() => onSliceDurationClick(slice)}>{slice.duration} min</p>
+
+      }
+      {
+          isEditingTitle
+          ? <div style={{ textAlign: 'center', color: 'white' }}>
+                  <div className="md-input-group medium-12">
+                    <input
+                      className="md-input"
+                      type="text"
+                      placeholder="Slice title"
+                      onChange={(e) => onSliceTitleChange(slice, e.target.value)}
+                      onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                              onSliceTitleSave(slice);
+                          }
+                      }}
+                      value={slice.title}
+                      style={{
+                          backgroundColor: 'white'
+                      }}
+                      onBlur={() => onSliceTitleSave(slice) }
+                      autoFocus
+                    />
+                  </div>
+            </div>
+          : <div onPointerDown={() => {
+                  onSliceTitleClick(slice)
+              }}
+              style={{ textAlign: 'center', color: 'white', overflow: 'hidden' }}
+                >
+            <SliceTitle>{slice.title}</SliceTitle>
+          </div>
+        }
+        <p>{ slice.duration } min</p>
     </Flex>
   </Element>
-));
+)});
 
-const SortableList = SortableContainer(({ slices }) => {
+const SortableList = SortableContainer(({ slices, onSliceTitleClick, onSliceTitleChange, onSliceTitleSave, onSliceDurationClick, onSliceDurationChange, onSliceDurationSave}) => {
   return (
     <List>
       {slices &&
         slices.map((slice, index) => (
-          <SortableItem key={`item-${slice.id}`} index={index} slice={slice} />
+            <SortableItem key={`item-${slice.id}`} index={index}
+            onSliceTitleClick={onSliceTitleClick}
+            onSliceTitleChange={onSliceTitleChange}
+            onSliceTitleSave={onSliceTitleSave}
+            onSliceDurationClick={onSliceDurationClick}
+            onSliceDurationChange={onSliceDurationChange}
+            onSliceDurationSave={onSliceDurationSave}
+            slice={slice} />
         ))}
     </List>
   );
@@ -45,6 +122,7 @@ class Agenda extends React.Component {
     this.state = {
       slices: isNull(props.agenda) ? [] : props.agenda
     };
+    this.onSliceTitleClick.bind(this);
   }
 
   // Will check if the agenda needs an update
@@ -60,6 +138,80 @@ class Agenda extends React.Component {
     }
   }
 
+  onSliceDurationClick = (slice) => {
+    const slices = this.state.slices;
+    const foundIndex = slices.findIndex(x => x.id == slice.id);
+      if (foundIndex === -1) {
+          return;
+      }
+    slice['editingDuration'] = true;
+    slices[foundIndex] = slice;
+    this.setState({ slices })
+  }
+
+    onSliceDurationChange = (slice, duration) => {
+        const slices = this.state.slices;
+          //const foundSlice = this.state.slices.find(stateSlice => stateSlice.id == slice.id)
+        const foundIndex = slices.findIndex(x => x.id == slice.id);
+          if (foundIndex === -1) {
+              return;
+          }
+        if (duration < minDuration) {
+            duration = minDuration;
+        }
+        if (duration > maxDuration) {
+            duration = maxDuration;
+        }
+        slice['duration'] = duration;
+        slices[foundIndex] = slice;
+        this.setState({ slices })
+    }
+
+    onSliceDurationSave = (slice) => {
+        const slices = this.state.slices;
+        const foundIndex = slices.findIndex(x => x.id == slice.id);
+          if (foundIndex === -1) {
+              return;
+          }
+        slice['editingDuration'] = false;
+        slices[foundIndex] = slice;
+        this.setState({ slices })
+    }
+
+  onSliceTitleClick = (slice) => {
+    const slices = this.state.slices;
+    const foundIndex = slices.findIndex(x => x.id == slice.id);
+      if (foundIndex === -1) {
+          return;
+      }
+    slice['editingTitle'] = true;
+    slices[foundIndex] = slice;
+    this.setState({ slices })
+  }
+
+    onSliceTitleChange = (slice, title) => {
+        const slices = this.state.slices;
+          //const foundSlice = this.state.slices.find(stateSlice => stateSlice.id == slice.id)
+        const foundIndex = slices.findIndex(x => x.id == slice.id);
+          if (foundIndex === -1) {
+              return;
+          }
+        slice['title'] = title;
+        slices[foundIndex] = slice;
+        this.setState({ slices })
+    }
+
+    onSliceTitleSave = (slice) => {
+        const slices = this.state.slices;
+        const foundIndex = slices.findIndex(x => x.id == slice.id);
+          if (foundIndex === -1) {
+              return;
+          }
+        slice['editingTitle'] = false;
+        slices[foundIndex] = slice;
+        this.setState({ slices })
+    }
+
   // Will run on sort end, so the state updates its index
   onSortEnd = ({ oldIndex, newIndex }) => {
     this.setState(
@@ -72,7 +224,14 @@ class Agenda extends React.Component {
 
   render() {
     const { slices } = this.state;
-    return <SortableList slices={slices} onSortEnd={this.onSortEnd} />;
+      return <SortableList slices={slices}
+      onSliceTitleClick={this.onSliceTitleClick}
+      onSliceTitleChange={this.onSliceTitleChange}
+      onSliceTitleSave={this.onSliceTitleSave}
+      onSliceDurationClick={this.onSliceDurationClick}
+      onSliceDurationChange={this.onSliceDurationChange}
+      onSliceDurationSave={this.onSliceDurationSave}
+      distance={5} onSortEnd={this.onSortEnd} />;
   }
 }
 

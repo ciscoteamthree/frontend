@@ -105,7 +105,7 @@ class Admin extends React.Component {
         <div>
           <div className="columns small-8 medium-10 gridColumn">
             <Header startMeeting={this.startMeeting} />
-            {teamId ? (
+            {!teamId ? (
               <AdminPanel
                 socket={socket}
                 setAgenda={this.setAgenda}
