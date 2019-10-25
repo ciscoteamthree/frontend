@@ -4,9 +4,13 @@ import moment from 'moment';
 
 class Header extends React.Component {
   render() {
-    const { startMeeting, user } = this.props;
+    const { startMeeting, user, startMeetingDisabled } = this.props;
     return (
-      <header className="md-top-bar md-top-bar--light" role="navigation" style={{ height: '8vh' }}>
+      <header
+        className="md-top-bar md-top-bar--light"
+        role="navigation"
+        style={{ height: '8vh' }}
+      >
         <div className="md-top-bar__container">
           <div className="md-top-bar__brand">
             <a className="md-brand" href="/">
@@ -45,10 +49,14 @@ class Header extends React.Component {
               </div>
             </div>
             <button
+              disabled={startMeetingDisabled}
               type="button"
               onClick={startMeeting}
               className="md-button"
-              style={{ backgroundColor: '#24AB31', color: '#fff' }}
+              style={{
+                backgroundColor: startMeetingDisabled ? '#DDD' : '#24AB31',
+                color: '#fff'
+              }}
             >
               Start meeting
             </button>

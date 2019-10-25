@@ -51,6 +51,12 @@ class Admin extends React.Component {
     this.setState({
       agenda
     });
+    if (this.props.currentMeeting) {
+      this.props.socket.emit('editMeeting', {
+        ...this.props.currentMeeting,
+        agenda
+      });
+    }
   };
 
   setTitle(event) {
@@ -119,7 +125,11 @@ class Admin extends React.Component {
       <div className="show-grid">
         <div>
           <div className="columns small-8 medium-10 gridColumn">
-            <Header startMeeting={this.startMeeting} user={user} />
+            <Header
+              startMeeting={this.startMeeting}
+              user={user}
+              startMeetingDisabled={!!currentMeeting}
+            />
             {currentMeeting && (
               <div>
                 Meeting in progress
