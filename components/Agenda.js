@@ -2,7 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import Flex, { FlexItem } from 'styled-flex-component';
 import moment from 'moment';
-import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import {
+  SortableContainer,
+  SortableElement,
+  SortableHandle
+} from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import { isEmpty, isNull, isEqual, sortBy } from 'lodash';
 
@@ -11,6 +15,7 @@ const Element = styled.li`
   margin: 0;
   background: ${props => props.color};
   height: ${props => (props.duration / props.totalDuration) * 100}%;
+  list-style-type: none;
 `;
 
 const List = styled.ul`
@@ -23,13 +28,22 @@ const SliceTitle = styled.ul`
   font-size: 2rem;
 `;
 
+const DragHandle = SortableHandle(() => (
+  <i
+    className="icon icon-list-menu_28"
+    style={{ color: 'white', fontWeight: '1000' }}
+  >
+    {' '}
+  </i>
+));
+
 const minDuration = 10;
 const maxDuration = 60;
 
 const SortableItem = SortableElement(
   ({
     slice,
-      totalDuration,
+    totalDuration,
     onSliceTitleClick,
     onSliceTitleChange,
     onSliceTitleSave,
@@ -41,76 +55,81 @@ const SortableItem = SortableElement(
     const isEditingDuration =
       'editingDuration' in slice && slice.editingDuration;
     return (
-      <Element color={slice.color} duration={slice.duration}
-    totalDuration={totalDuration}
+      <Element
+        color={slice.color}
+        duration={slice.duration}
+        totalDuration={totalDuration}
       >
-        <Flex full justifyBetween column>
-          {isEditingDuration ? (
-            <div className="md-input-group medium-3 slice-duration">
-              <input
-                className="md-input"
-                type="number"
-                placeholder={'' + minDuration}
-                min={'' + minDuration}
-                max={'' + maxDuration}
-                onChange={e => onSliceDurationChange(slice, e.target.value)}
-                onKeyDown={e => {
-                  if (e.key === 'Enter') {
-                    onSliceDurationSave(slice);
-                  }
-                }}
-                value={slice.duration}
-                style={{
-                  backgroundColor: 'white'
-                }}
-                onBlur={() => {
-                  onSliceDurationSave(slice);
-                }}
-                autoFocus
-              />
-            </div>
-          ) : (
-            <p onPointerDown={() => onSliceDurationClick(slice)}>
-              {slice.duration} min
-            </p>
-          )}
-          {isEditingTitle ? (
-            <div style={{ textAlign: 'center', color: 'white' }}>
-              <div className="md-input-group medium-12">
+        <Flex center full>
+          <DragHandle />
+          <Flex full justifyBetween column>
+            {isEditingDuration ? (
+              <div className="md-input-group medium-3 slice-duration">
                 <input
                   className="md-input"
-                  type="text"
-                  placeholder="Slice title"
-                  onChange={e => onSliceTitleChange(slice, e.target.value)}
-                  onKeyPress={e => {
+                  type="number"
+                  placeholder={'' + minDuration}
+                  min={'' + minDuration}
+                  max={'' + maxDuration}
+                  onChange={e => onSliceDurationChange(slice, e.target.value)}
+                  onKeyDown={e => {
                     if (e.key === 'Enter') {
-                      onSliceTitleSave(slice);
+                      onSliceDurationSave(slice);
                     }
                   }}
-                  value={slice.title}
+                  value={slice.duration}
                   style={{
                     backgroundColor: 'white'
                   }}
-                  onBlur={() => onSliceTitleSave(slice)}
+                  onBlur={() => {
+                    onSliceDurationSave(slice);
+                  }}
                   autoFocus
                 />
               </div>
-            </div>
-          ) : (
-            <div
-              onPointerDown={() => {
-                onSliceTitleClick(slice);
-              }}
-              style={{
-                textAlign: 'center',
-                color: 'white',
-                overflow: 'hidden'
-              }}
-            >
-              <SliceTitle>{slice.title}</SliceTitle>
-            </div>
-          )}
-          <p>{slice.duration} min</p>
+            ) : (
+              <p onPointerDown={() => onSliceDurationClick(slice)}>
+                {slice.duration} min
+              </p>
+            )}
+            {isEditingTitle ? (
+              <div style={{ textAlign: 'center', color: 'white' }}>
+                <div className="md-input-group medium-12">
+                  <input
+                    className="md-input"
+                    type="text"
+                    placeholder="Slice title"
+                    onChange={e => onSliceTitleChange(slice, e.target.value)}
+                    onKeyPress={e => {
+                      if (e.key === 'Enter') {
+                        onSliceTitleSave(slice);
+                      }
+                    }}
+                    value={slice.title}
+                    style={{
+                      backgroundColor: 'white'
+                    }}
+                    onBlur={() => onSliceTitleSave(slice)}
+                    autoFocus
+                  />
+                </div>
+              </div>
+            ) : (
+              <div
+                onPointerDown={() => {
+                  onSliceTitleClick(slice);
+                }}
+                style={{
+                  textAlign: 'center',
+                  color: 'white',
+                  overflow: 'hidden'
+                }}
+              >
+                <SliceTitle>{slice.title}</SliceTitle>
+              </div>
+            )}
+            <p>{slice.duration} min</p>
+          </Flex>
         </Flex>
       </Element>
     );
@@ -128,7 +147,7 @@ const SortableList = SortableContainer(
     onSliceDurationSave,
     disabled
   }) => {
-  const totalDuration = slices.reduce((a, b) => a + b.duration, 0);
+    const totalDuration = slices.reduce((a, b) => a + b.duration, 0);
     return (
       <List>
         {slices &&
@@ -151,7 +170,6 @@ const SortableList = SortableContainer(
     );
   }
 );
-
 
 class Agenda extends React.Component {
   constructor(props) {
@@ -273,6 +291,8 @@ class Agenda extends React.Component {
         distance={5}
         disabled={this.props.disabled}
         onSortEnd={this.onSortEnd}
+        useDragHandle
+        lockAxis={'y'}
       />
     );
   }
