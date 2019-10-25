@@ -26,7 +26,7 @@ class AdminPanel extends React.Component {
     templates: []
   };
   componentDidMount() {
-    const socket = io('https://2a9d7c02.ngrok.io');
+    const socket = io('https://5b6b05d2.ngrok.io');
     socket.on('templates', templates => {
       this.setState({
         templates

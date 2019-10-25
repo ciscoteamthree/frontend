@@ -10,7 +10,7 @@ const WebexClient = () => {
   const [token, setToken] = useState();
 
   useEffect(() => {
-    const socket = io('https://2a9d7c02.ngrok.io');
+    const socket = io('https://5b6b05d2.ngrok.io');
     socket.on('token', token => {
       setToken(token);
     });
