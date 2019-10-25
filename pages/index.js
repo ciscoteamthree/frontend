@@ -15,7 +15,7 @@ const Client = () => {
     socket.on('currentMeeting', meeting => {
       setCurrentMeeting(meeting);
     });
-  });
+  }, []);
 
   const meetingReady = meeting => {
     return meeting && moment().after(meeting.startTime);
@@ -39,9 +39,9 @@ const Client = () => {
         <WebexClient />
       ) : (
         <MeetingWait meeting={currentMeeting} />
-      )}{' '}
+      )}
       <div>
-        <Agenda agenda={currentMeeting && currentMeeting.agenda} />
+        <Agenda agenda={currentMeeting ? currentMeeting.agenda : []} />
       </div>
     </div>
   );

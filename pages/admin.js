@@ -1,8 +1,10 @@
 import React from 'react';
 import Head from 'next/head';
 import io from 'socket.io-client';
+import { withRouter } from 'next/router';
 import Column from '../components/Column';
 import AdminPanel from '../components/AdminPanel';
+import TeamPicker from '../components/TeamPicker';
 import Agenda from '../components/Agenda';
 import Header from '../components/Header';
 import styled from 'styled-components';
@@ -32,8 +34,9 @@ class Admin extends React.Component {
     title: null,
     startTime: null,
     titleError: null,
-      timeError: null,
-      socket: null
+    timeError: null,
+    socket: null,
+    teamId: null
   };
 
   constructor(props) {
@@ -44,8 +47,8 @@ class Admin extends React.Component {
     this.startMeeting = this.startMeeting.bind(this);
     const socket = io(WS_URL);
     this.state = {
-        socket
-    }
+      socket
+    };
   }
 
   setAgenda = agenda => {
@@ -62,9 +65,9 @@ class Admin extends React.Component {
     this.setState({ startTime: event.target.value });
   }
 
-    startMeeting = () => {
-        const { socket, title, time, agenda } = this.state;
-      if (title === null || title == '') {
+  startMeeting = () => {
+    const { socket, title, time, agenda } = this.state;
+    if (title === null || title == '') {
       this.setState({ titleError: 'Title needs to be set' });
     }
     if (startTime === null || startTime == '') {
@@ -87,23 +90,34 @@ class Admin extends React.Component {
     socket.emit('editMeeting', meeting);
   };
 
+  setTeamId = teamId => {
+    this.setState({ teamId });
+  };
+
   render() {
-    const { socket, agenda, titleError, timeError } = this.state;
+    const { socket, agenda, titleError, timeError, teamId } = this.state;
     return (
       <div className="show-grid">
         <div>
           <div className="columns small-8 medium-10 gridColumn">
             <Header startMeeting={this.startMeeting} />
-            <AdminPanel
-              socket={socket}
-              setAgenda={this.setAgenda}
-              setTitle={this.setTitle}
-              title={this.state.title}
-              setTime={this.setTime}
-              startTime={this.state.startTime}
-              titleError={titleError}
-              timeError={timeError}
-            />
+            {teamId ? (
+              <AdminPanel
+                socket={socket}
+                setAgenda={this.setAgenda}
+                setTitle={this.setTitle}
+                title={this.state.title}
+                setTime={this.setTime}
+                startTime={this.state.startTime}
+                titleError={titleError}
+                timeError={timeError}
+              />
+            ) : (
+              <TeamPicker
+                setTeamId={this.setTeamId}
+                token={this.props.router.query.token}
+              />
+            )}
           </div>
           <div
             className="columns small-4 medium-2 gridColumn"
@@ -118,4 +132,4 @@ class Admin extends React.Component {
   }
 }
 
-export default Admin;
+export default withRouter(Admin);

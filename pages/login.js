@@ -15,12 +15,12 @@ const Login = () => {
       socket.emit('oauth', code);
     }
     if (!socket) {
-      const _socket = io('https://5b6b05d2.ngrok.io');
+      const _socket = io('http://localhost:8000');
       _socket.on('token', token => {
         setToken(token);
         setLoginUrl(null);
         // Redirect away from login page
-        router.push('/admin');
+        router.push(`/admin?token=${token}`);
       });
       _socket.on('auth_missing', url => {
         setLoginUrl(url);
