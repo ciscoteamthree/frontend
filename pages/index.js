@@ -66,7 +66,7 @@ const Client = ({ currentMeeting, token, sensorData }) => {
     interval = setInterval(
       () =>
         setTimeElapsed(
-          currentMeeting ? lmoment().diff(moment(currentMeeting.startTime)) : 0
+          currentMeeting ? moment().diff(moment(currentMeeting.startTime)) : 0
         ),
       1000
     );
