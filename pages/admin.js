@@ -89,12 +89,12 @@ class Admin extends React.Component {
 
   render() {
     const { agenda, titleError, timeError, teamId, agendaError } = this.state;
-    const { socket, templates, sensorData } = this.props;
+    const { socket, templates, sensorData, user } = this.props;
     return (
       <div className="show-grid">
         <div>
           <div className="columns small-8 medium-10 gridColumn">
-            <Header startMeeting={this.startMeeting} />
+            <Header startMeeting={this.startMeeting} user={user} />
             {teamId ? (
               <AdminPanel
                 socket={socket}

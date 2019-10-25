@@ -5,7 +5,7 @@ import { WS_URL } from '../config';
 const WebexClient = ({ token, meeting }) => {
   useEffect(() => {
     const spaceWidget = document.getElementById('webex-widget');
-    if (token) {
+    if (token && meeting) {
       ciscospark.widget(spaceWidget).spaceWidget({
         accessToken: token,
         destinationType: 'spaceId',

@@ -4,7 +4,7 @@ import moment from 'moment';
 
 class Header extends React.Component {
   render() {
-    const { startMeeting } = this.props;
+    const { startMeeting, user } = this.props;
     return (
       <header className="md-top-bar md-top-bar--light" role="navigation">
         <div className="md-top-bar__container">
@@ -12,7 +12,7 @@ class Header extends React.Component {
             <a className="md-brand" href="/">
               <div className="md-brand__logo">
                 <img
-                  src="/images/cisco/cisco-logo-black.svg"
+                  src={'/images/cisco/cisco-logo-black.svg'}
                   alt="Bridging Schedules"
                 />
               </div>
@@ -33,11 +33,14 @@ class Header extends React.Component {
           </nav>
           <div className="md-top-bar__right ">
             <div className="md-top-bar__user">
-              <a href="javascript:void(0)">My Apps</a>
+              <span>{user && user.displayName} </span>
               <div className="md-avatar" tabIndex="0" aria-haspopup="true">
                 <img
                   className="user-image"
-                  src="https://randomuser.me/api/portraits/men/85.jpg"
+                  src={
+                    (user && user.avatar) ||
+                    'https://randomuser.me/api/portraits/men/85.jpg'
+                  }
                 />
               </div>
             </div>
