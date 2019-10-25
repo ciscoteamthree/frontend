@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import io from 'socket.io-client';
+import { WS_URL } from '../config';
 
 const Login = () => {
   const router = useRouter();
@@ -15,7 +16,7 @@ const Login = () => {
       socket.emit('oauth', code);
     }
     if (!socket) {
-      const _socket = io('http://localhost:8000');
+      const _socket = io(WS_URL);
       _socket.on('token', token => {
         setToken(token);
         setLoginUrl(null);
