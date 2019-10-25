@@ -4,7 +4,7 @@ import WebexClient from '../components/WebexClient';
 import MeetingWait from '../components/MeetingWait';
 import Agenda from '../components/Agenda';
 import io from 'socket.io-client';
-import WS_URL from '../config';
+import { WS_URL } from '../config';
 import moment from 'moment';
 
 const Client = () => {
