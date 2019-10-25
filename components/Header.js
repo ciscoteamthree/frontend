@@ -6,7 +6,7 @@ class Header extends React.Component {
   render() {
     const { startMeeting, user } = this.props;
     return (
-      <header className="md-top-bar md-top-bar--light" role="navigation">
+      <header className="md-top-bar md-top-bar--light" role="navigation" style={{ height: '8vh' }}>
         <div className="md-top-bar__container">
           <div className="md-top-bar__brand">
             <a className="md-brand" href="/">

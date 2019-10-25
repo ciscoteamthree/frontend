@@ -21,11 +21,11 @@ const Element = styled.li`
 const List = styled.ul`
   padding: 0;
   margin: 0;
-  height: 90.5%;
+  height: 92vh;
 `;
 
-const SliceTitle = styled.ul`
-  font-size: 2rem;
+const SliceTitle = styled.p`
+  font-size: 1.5rem;
 `;
 
 const DragHandle = SortableHandle(() => (
