@@ -77,15 +77,6 @@ export default class Default extends Document {
             .md-list-item__header {
               color: black !important;
             }
-
-            .slice-duration input[type=number] {
-                height: 30px;
-            }
-
-            .slice-duration input[type=number]:hover::-webkit-inner-spin-button {  
-                width: 14px;
-                height: 30px;
-            }
           `}</style>
         </Head>
         <body>

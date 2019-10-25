@@ -50,11 +50,10 @@ const SortableItem = SortableElement(({ slice, onSliceTitleClick, onSliceTitleCh
               }}
               value={slice.duration}
               style={{
-                  backgroundColor: 'white',
-                  height: '50px'
+                  backgroundColor: 'white'
               }}
               onBlur={() => {
-                  //onSliceDurationSave(slice)
+                  onSliceDurationSave(slice)
               }}
               autoFocus
             />
