@@ -34,15 +34,10 @@ class Admin extends React.Component {
     title: null,
     startTime: null,
     titleError: null,
-<<<<<<< HEAD
     timeError: null,
-    socket: null,
-    teamId: null
-=======
-      timeError: null,
-      agendaError: null,
-      socket: null
->>>>>>> Add missing input handling before starting meeting
+    agendaError: null,
+    teamId: null,
+    socket: null
   };
 
   constructor(props) {
@@ -53,14 +48,8 @@ class Admin extends React.Component {
     this.startMeeting = this.startMeeting.bind(this);
     console.log("WS_URL", WS_URL)
     const socket = io(WS_URL);
-<<<<<<< HEAD
-    this.state = {
-      socket
-    };
-=======
     console.log("Started socket!")
     this.state.socket = socket;
->>>>>>> Add missing input handling before starting meeting
   }
 
   setAgenda = agenda => {
