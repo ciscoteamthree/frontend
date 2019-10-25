@@ -35,8 +35,9 @@ class Admin extends React.Component {
     startTime: null,
     titleError: null,
     timeError: null,
-    socket: null,
-    teamId: null
+    agendaError: null,
+    teamId: null,
+    socket: null
   };
 
   constructor(props) {
@@ -45,10 +46,10 @@ class Admin extends React.Component {
     this.setTitle = this.setTitle.bind(this);
     this.setTime = this.setTime.bind(this);
     this.startMeeting = this.startMeeting.bind(this);
+    console.log("WS_URL", WS_URL)
     const socket = io(WS_URL);
-    this.state = {
-      socket
-    };
+    console.log("Started socket!")
+    this.state.socket = socket;
   }
 
   setAgenda = agenda => {
@@ -66,18 +67,21 @@ class Admin extends React.Component {
   }
 
   startMeeting = () => {
-    const { socket, title, time, agenda } = this.state;
-    if (title === null || title == '') {
-      this.setState({ titleError: 'Title needs to be set' });
-    }
-    if (startTime === null || startTime == '') {
-      this.setState({ timeError: 'Time needs to be set' });
-    }
+    console.log("startmeeting state", this.state)
+    const { socket, title, startTime, agenda } = this.state;
+    let newState = {}
+    newState.agendaError = agenda === null || agenda == '';
+    newState.titleError = title === null || title == '';
+    newState.timeError = startTime === null || startTime == '';
+
+    this.setState(newState);
     if (
       title === null ||
       title == '' ||
       startTime === null ||
-      startTime == ''
+      startTime == '' ||
+      agenda === null ||
+      agenda == ''
     ) {
       return;
     }
@@ -95,7 +99,7 @@ class Admin extends React.Component {
   };
 
   render() {
-    const { socket, agenda, titleError, timeError, teamId } = this.state;
+    const { socket, agenda, titleError, timeError, teamId, agendaError } = this.state;
     return (
       <div className="show-grid">
         <div>
@@ -111,6 +115,7 @@ class Admin extends React.Component {
                 startTime={this.state.startTime}
                 titleError={titleError}
                 timeError={timeError}
+                agendaError={agendaError}
               />
             ) : (
               <TeamPicker

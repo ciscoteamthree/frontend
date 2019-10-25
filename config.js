@@ -1,2 +1,2 @@
 export const WS_URL = 'https://26744117.ngrok.io';
-//const WS_URL = 'localhost:8000';
+//export const WS_URL = 'http://localhost:8000';
