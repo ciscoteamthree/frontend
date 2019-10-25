@@ -8,7 +8,9 @@ const Login = ({ socket, token }) => {
   const [loginUrl, setLoginUrl] = useState();
 
   useEffect(() => {
-    socket.emit('oauth', code);
+    if (code) {
+      socket.emit('oauth', code);
+    }
 
     socket.on('token', token => {
       setLoginUrl(null);
