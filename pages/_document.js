@@ -59,10 +59,6 @@ export default class Default extends Document {
               font-weight: 500;
             }
 
-            ul {
-              list-style-type: none !important;
-            }
-
             .gridColumn {
               height: 100vh;
               padding: 0 !important;
