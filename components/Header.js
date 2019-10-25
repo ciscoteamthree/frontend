@@ -21,33 +21,13 @@ class Header extends React.Component {
           </div>
           <nav className="md-top-bar__nav ">
             <div className="md-list md-list--horizontal" role="list">
-              <a
-                className="md-list-item active"
-                role="listItem"
-                href="javascript:void(0)"
-              >
-                Develop
+              <a className="md-list-item active" role="listItem" href="/admin">
+                <h2>Admin</h2>
               </a>
-              <a
-                className="md-list-item"
-                role="listItem"
-                href="javascript:void(0)"
-              >
-                Styles
-              </a>
-              <a
-                className="md-list-item"
-                role="listItem"
-                href="javascript:void(0)"
-              >
-                Layout
-              </a>
-              <a
-                className="md-list-item"
-                role="listItem"
-                href="javascript:void(0)"
-              >
-                Navigation
+            </div>
+            <div className="md-list md-list--horizontal" role="list">
+              <a className="md-list-item active" role="listItem" href="/login">
+                <h2>Login</h2>
               </a>
             </div>
           </nav>
@@ -61,15 +41,14 @@ class Header extends React.Component {
                 />
               </div>
             </div>
-                <button
-                type="button"
-                onClick={() => startMeeting()}
-                className="md-button"
-                style={{ backgroundColor: '#24AB31', color: '#fff' }}
-              >
-                Start meeting
-              </button>
-
+            <button
+              type="button"
+              onClick={() => startMeeting()}
+              className="md-button"
+              style={{ backgroundColor: '#24AB31', color: '#fff' }}
+            >
+              Start meeting
+            </button>
           </div>
           <i className="md-top-bar__mobile-menu-button icon icon-list-menu_20"></i>
           <div className="md-top-bar__mobile md-tb-mobile">
