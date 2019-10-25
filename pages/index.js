@@ -65,7 +65,6 @@ const Client = () => {
   const meetingReady = meeting => {
     return meeting && moment().isAfter(moment(meeting.startTime));
   };
-
   return (
     <div
       style={{
@@ -86,9 +85,7 @@ const Client = () => {
         <MeetingWait meeting={currentMeeting} />
       )}
       <div>
-        {
-          //<Clock />
-        }
+        {<Clock />}
         <Agenda
           disabled={true}
           agenda={currentMeeting ? currentMeeting.agenda : []}
