@@ -89,7 +89,7 @@ class Admin extends React.Component {
 
   render() {
     const { agenda, titleError, timeError, teamId, agendaError } = this.state;
-    const { socket, templates, sensorData, user } = this.props;
+    const { socket, templates, sensorData, user, token } = this.props;
     return (
       <div className="show-grid">
         <div>
@@ -109,10 +109,7 @@ class Admin extends React.Component {
                 templates={templates}
               />
             ) : (
-              <TeamPicker
-                setTeamId={this.setTeamId}
-                token={this.props.router.query.token}
-              />
+              <TeamPicker setTeamId={this.setTeamId} token={token} />
             )}
           </div>
           <div

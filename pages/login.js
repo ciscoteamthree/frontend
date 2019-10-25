@@ -13,9 +13,7 @@ const Login = ({ socket, token }) => {
     }
 
     socket.on('token', token => {
-      setLoginUrl(null);
-      // Redirect away from login page
-      router.push(`/admin?token=${token}`);
+      router.push('/admin');
     });
     socket.on('auth_missing', url => {
       setLoginUrl(url);

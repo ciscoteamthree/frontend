@@ -82,7 +82,7 @@ const Client = ({ currentMeeting, token, sensorData }) => {
     <div className="show-grid">
       <div className="columns small-8 medium-10 gridColumn">
         {meetingReady(currentMeeting) ? (
-          <WebexClient token={token} />
+          <WebexClient token={token} meeting={currentMeeting} />
         ) : (
           <MeetingWait meeting={currentMeeting} />
         )}
