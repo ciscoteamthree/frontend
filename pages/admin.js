@@ -64,6 +64,12 @@ class Admin extends React.Component {
 
     startMeeting = () => {
         const { socket, title, time, agenda } = this.state;
+      if (title === null || title == '') {
+      this.setState({ titleError: 'Title needs to be set' });
+    }
+    if (startTime === null || startTime == '') {
+      this.setState({ timeError: 'Time needs to be set' });
+    }
     if (
       title === null ||
       title == '' ||
