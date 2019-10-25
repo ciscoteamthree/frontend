@@ -104,6 +104,7 @@ class AdminPanel extends React.Component {
     ));
 
     return (
+
       <Flex full column>
         <Section>
           <h1>Meeting Title</h1>
@@ -131,6 +132,13 @@ class AdminPanel extends React.Component {
         <Section>
           <h1>Templates</h1>
           <Flex full justifyAround style={{ marginTop: '20px' }}>
+            {
+                templates.length === 0
+                    ? <i className="md-spinner md-spinner--28 md-spinner--blue" style={{
+                        fontSize: '86px'
+                    }}></i>
+                    : templates
+            }
             {templates}
           </Flex>
         </Section>
