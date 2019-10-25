@@ -27,6 +27,7 @@ const Login = () => {
         setLoginUrl(url);
       });
       setSocket(_socket);
+      return () => socket.close();
     }
   }, [code, socket]);
 
