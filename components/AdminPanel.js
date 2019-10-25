@@ -8,6 +8,10 @@ const Section = styled.div`
   padding: 20px;
 `;
 
+const MeetingSetting = styled.div`
+  width: 30vw;
+`;
+
 const Template = styled.div`
   padding: 20px;
   background-color: white;
@@ -20,6 +24,10 @@ const TextOverflow = styled.div`
   text-overflow: ellipsis;
 `;
 
+const ErrorText = styled.div`
+  color: #FF5C4A;
+`;
+
 class AdminPanel extends React.Component {
   state = {
     wsSocket: null,
@@ -27,6 +35,7 @@ class AdminPanel extends React.Component {
   };
   componentDidMount() {
     const { socket } = this.props;
+    console.log("SOCKET adminpanel!", socket)
     socket.on('templates', templates => {
       console.log("got templates", templates)
       this.setState({
@@ -40,12 +49,14 @@ class AdminPanel extends React.Component {
 
   render() {
     const {
+      title,
       startTime,
       setAgenda,
       setTitle,
       setTime,
       titleError,
-      timeError
+        timeError,
+        agendaError
     } = this.props;
     const templates = this.state.templates.map(template => (
       <Template key={template.title}>
@@ -106,32 +117,72 @@ class AdminPanel extends React.Component {
 
     return (
 
-      <Flex full column>
-        <Section>
-          <h1>Meeting Title</h1>
-          <div className="md-input-group medium-6">
-            <input
-              className="md-input"
-              type="text"
-              placeholder="Important meeting"
-              value={this.props.title}
-              onChange={setTitle}
-            />
-          </div>
-        </Section>
-        <Section>
-          <h1>Start Time</h1>
-          <div className="md-input-group medium-6">
-            <input
-              className="md-input"
-              type="text"
-              value={this.props.startTime}
-              onChange={setTime}
-            />
-          </div>
-        </Section>
+      <Flex column>
+        <Flex full row justifyAround>
+            <Section>
+                  <MeetingSetting>
+              <Flex full center column>
+                <div>
+                  <h1>Meeting Title</h1>
+                  <div className="md-input-group medium-12">
+                    <input
+                      className="md-input"
+                      type="text"
+                      placeholder="Important meeting"
+                      value={title}
+                      onChange={setTitle}
+                      style={{
+                          backgroundColor: 'white',
+                          border: titleError && '1px solid #D93820'
+                      }}
+                    />
+                    { titleError &&
+                    <ErrorText>
+                        * This field is required.
+                    </ErrorText>
+                    }
+                  </div>
+                </div>
+          </Flex>
+              </MeetingSetting>
+            </Section>
+            <Section>
+          <MeetingSetting>
+              <Flex full center column>
+                <div>
+                  <h1 style={{
+                      textAlign: 'left'
+                  }}>Start Time</h1>
+              <div className="md-input-group medium-12">
+                <input
+                  className="md-input"
+                  type="text"
+                  value={startTime}
+                  onChange={setTime}
+                      style={{
+                          backgroundColor: 'white',
+                          border: timeError && '1px solid #D93820'
+
+                      }}
+                />
+                { timeError &&
+                <ErrorText>
+                    * This field is required.
+                </ErrorText>
+                }
+              </div>
+            </div>
+          </Flex>
+          </MeetingSetting>
+            </Section>
+        </Flex>
         <Section>
           <h1>Templates</h1>
+          { agendaError &&
+          <ErrorText>
+              * You need to choose a template.
+          </ErrorText>
+          }
           <Flex full justifyAround style={{ marginTop: '20px' }}>
             {
                 templates.length === 0
@@ -140,7 +191,6 @@ class AdminPanel extends React.Component {
                     }}></i>
                     : templates
             }
-            {templates}
           </Flex>
         </Section>
       </Flex>
