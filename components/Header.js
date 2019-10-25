@@ -4,7 +4,7 @@ import moment from 'moment';
 
 class Header extends React.Component {
   render() {
-    const { title, description, duration, color } = this.props;
+    const { startMeeting } = this.props;
     return (
       <header className="md-top-bar md-top-bar--light" role="navigation">
         <div className="md-top-bar__container">
@@ -61,6 +61,15 @@ class Header extends React.Component {
                 />
               </div>
             </div>
+                <button
+                type="button"
+                onClick={() => startMeeting()}
+                className="md-button"
+                style={{ backgroundColor: '#24AB31', color: '#fff' }}
+              >
+                Start meeting
+              </button>
+
           </div>
           <i className="md-top-bar__mobile-menu-button icon icon-list-menu_20"></i>
           <div className="md-top-bar__mobile md-tb-mobile">
