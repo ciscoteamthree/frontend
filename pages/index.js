@@ -17,7 +17,7 @@ const Client = () => {
   });
 
   const meetingReady = meeting => {
-    return meeting && moment.now().after(meeting.startTime);
+    return meeting && moment().after(meeting.startTime);
   };
 
   return (
