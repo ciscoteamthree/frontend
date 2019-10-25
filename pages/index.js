@@ -12,6 +12,7 @@ const Client = () => {
 
   useEffect(() => {
     const socket = io(WS_URL);
+    console.log(WS_URL);
     socket.on('currentMeeting', meeting => {
       setCurrentMeeting(meeting);
     });
