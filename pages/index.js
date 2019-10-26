@@ -28,7 +28,8 @@ const Client = ({ socket, currentMeeting, token, sensorData }) => {
     }
     meeting.agenda.forEach(slice => {
       console.log(slice);
-      if (10 > timeLeftSlice(meeting, slice.id) > 9) {
+      const timeLeft = timeLeftSlice(meeting, slice.id);
+      if (timeLeft > 9 && timeLeft < 10) {
         socket.emit('sliceEnd', slice.title);
       }
     });
@@ -43,7 +44,7 @@ const Client = ({ socket, currentMeeting, token, sensorData }) => {
       );
       runHooks(currentMeeting, timeElapsed);
     }, 1000);
-  }, []);
+  }, [currentMeeting]);
 
   const meetingReady = meeting => {
     return meeting && moment().isAfter(moment(meeting.startTime, DATE_FORMAT));

@@ -11,5 +11,6 @@ export const timeLeftSlice = (meeting, sliceId) => {
   const elapsed = moment().diff(moment(meeting.startTime, DATE_FORMAT)) / 1000;
   console.log(totalTime);
   console.log(elapsed);
+  console.log('Time left', totalTime - elapsed);
   return totalTime - elapsed;
 };
