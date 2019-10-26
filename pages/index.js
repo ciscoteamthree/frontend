@@ -28,6 +28,9 @@ const Client = ({ socket, currentMeeting, token, sensorData }) => {
     meeting.agenda.forEach(slice => {
       console.log(slice);
       const timeLeft = timeLeftSlice(meeting, slice.id);
+      if (slice.title == 'Green zone' && timeLeft > -1 && timeLeft < 0) {
+        socket.emit('greenZoneStarting', slice);
+      }
       if (timeLeft > 9 && timeLeft < 10) {
         socket.emit('sliceEnd', slice.title);
       }
