@@ -14,9 +14,8 @@ class Admin extends React.Component {
     agenda: null,
     title: null,
     startTime: moment()
-      .minutes(0)
       .seconds(0)
-      .add('hours', 1)
+      .add('minutes', 1)
       .format(DATE_FORMAT),
     titleError: null,
     timeError: null,

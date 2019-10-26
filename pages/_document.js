@@ -75,7 +75,7 @@ export default class Default extends Document {
             }
           `}</style>
         </Head>
-        <body>
+        <body style={{ overflowY: 'hidden' }}>
           <Main />
           <NextScript />
         </body>
