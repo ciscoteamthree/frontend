@@ -15,7 +15,7 @@ const Done = styled.div`
   background: rgba(39, 39, 39, 0.6);
   border-bottom: 5px solid red;
   box-sizing: border-box;
-  height: ${props => (props.timeElapsed / 60000 / props.totalDuration) * 100}%;
+  height: ${props => (props.timeElapsed / 60000 / props.totalDuration) * 92}vh;
 `;
 
 const Client = ({ socket, currentMeeting, token, sensorData }) => {
