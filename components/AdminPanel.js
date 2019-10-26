@@ -58,7 +58,7 @@ class AdminPanel extends React.Component {
               style={{
                 height: '150px',
                 marginTop: '10px',
-                opacity: 0.25,
+                opacity: 0.6,
                 justifyContent: 'flex-end'
               }}
             >

@@ -37,7 +37,7 @@ const DragHandle = SortableHandle(() => (
   </i>
 ));
 
-const minDuration = 10;
+const minDuration = 1;
 const maxDuration = 60;
 
 const SortableItem = SortableElement(
@@ -49,87 +49,97 @@ const SortableItem = SortableElement(
     onSliceTitleSave,
     onSliceDurationClick,
     onSliceDurationChange,
-    onSliceDurationSave
+    onSliceDurationSave,
+    disabled
   }) => {
-    const isEditingTitle = 'editingTitle' in slice && slice.editingTitle;
+    const isEditingTitle = !disabled && 'editingTitle' in slice && slice.editingTitle;
     const isEditingDuration =
-      'editingDuration' in slice && slice.editingDuration;
+      !disabled && 'editingDuration' in slice && slice.editingDuration;
     return (
       <Element
         color={slice.color}
         duration={slice.duration}
         totalDuration={totalDuration}
       >
-        <Flex center full>
-          <DragHandle />
-          <Flex full justifyBetween column>
-            {isEditingDuration ? (
-              <div className="md-input-group medium-3 slice-duration">
-                <input
-                  className="md-input"
-                  type="number"
-                  placeholder={'' + minDuration}
-                  min={'' + minDuration}
-                  max={'' + maxDuration}
-                  onChange={e => onSliceDurationChange(slice, e.target.value)}
-                  onKeyDown={e => {
-                    if (e.key === 'Enter') {
-                      onSliceDurationSave(slice);
-                    }
-                  }}
-                  value={slice.duration}
-                  style={{
-                    backgroundColor: 'white'
-                  }}
-                  onBlur={() => {
-                    onSliceDurationSave(slice);
-                  }}
-                  autoFocus
-                />
-              </div>
-            ) : (
-              <p onPointerDown={() => onSliceDurationClick(slice)}>
-                {slice.duration} min
-              </p>
-            )}
-            {isEditingTitle ? (
-              <div style={{ textAlign: 'center', color: 'white' }}>
-                <div className="md-input-group medium-12">
-                  <input
-                    className="md-input"
-                    type="text"
-                    placeholder="Slice title"
-                    onChange={e => onSliceTitleChange(slice, e.target.value)}
-                    onKeyPress={e => {
-                      if (e.key === 'Enter') {
-                        onSliceTitleSave(slice);
-                      }
-                    }}
-                    value={slice.title}
-                    style={{
-                      backgroundColor: 'white'
-                    }}
-                    onBlur={() => onSliceTitleSave(slice)}
-                    autoFocus
-                  />
+        <Flex full center>
+            <Flex full column justifyBetween style={{ flexBasis: '15%'}}>
+              <div>
+                {isEditingDuration ? (
+                  <div className="md-input-group slice-duration">
+                    <input
+                      className="md-input"
+                      type="number"
+                      placeholder={minDuration}
+                      min={minDuration}
+                      max={maxDuration}
+                      onChange={e => onSliceDurationChange(slice, e.target.value)}
+                      onKeyDown={e => {
+                        if (e.key === 'Enter') {
+                          onSliceDurationSave(slice);
+                        }
+                      }}
+                      value={slice.duration}
+                      style={{
+                          backgroundColor: 'white',
+                          fontSize: '15px',
+                          height: '32px',
+                          width: '70px'
+                      }}
+                      onBlur={() => {
+                          onSliceDurationSave(slice);
+                      }}
+                      autoFocus
+                    />
+                  </div>
+                ) : (
+                  <p onPointerDown={() => onSliceDurationClick(slice)} style={{ color: 'white', fontStyle: 'italic'}}>
+                    {slice.duration} min
+                  </p>
+                )}
                 </div>
-              </div>
-            ) : (
-              <div
-                onPointerDown={() => {
-                  onSliceTitleClick(slice);
-                }}
-                style={{
-                  textAlign: 'center',
-                  color: 'white',
-                  overflow: 'hidden'
-                }}
-              >
-                <SliceTitle>{slice.title}</SliceTitle>
-              </div>
-            )}
-            <p>{slice.duration} min</p>
-          </Flex>
+                <div>
+                    { !disabled && <DragHandle/> }
+                </div>
+                <div></div>
+            </Flex>
+            <Flex full center justifyBetween column style={{ flexBasis: '90%'}}>
+                {isEditingTitle ? (
+                  <div style={{ textAlign: 'center', color: 'white' }}>
+                    <div className="md-input-group medium-12">
+                      <input
+                        className="md-input"
+                        type="text"
+                        placeholder="Slice title"
+                        onChange={e => onSliceTitleChange(slice, e.target.value)}
+                        onKeyPress={e => {
+                          if (e.key === 'Enter') {
+                            onSliceTitleSave(slice);
+                          }
+                        }}
+                        value={slice.title}
+                        style={{
+                          backgroundColor: 'white'
+                        }}
+                        onBlur={() => onSliceTitleSave(slice)}
+                        autoFocus
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    onPointerDown={() => {
+                      onSliceTitleClick(slice);
+                    }}
+                    style={{
+                      textAlign: 'center',
+                      color: 'white',
+                      overflow: 'hidden'
+                    }}
+                  >
+                    <SliceTitle>{slice.title}</SliceTitle>
+                  </div>
+                )}
+              </Flex>
         </Flex>
       </Element>
     );
@@ -211,10 +221,10 @@ class Agenda extends React.Component {
     if (foundIndex === -1) {
       return;
     }
+    duration = Number(duration);
     if (duration < minDuration) {
       duration = minDuration;
-    }
-    if (duration > maxDuration) {
+    } else if (duration > maxDuration) {
       duration = maxDuration;
     }
     slice['duration'] = duration;
@@ -246,7 +256,6 @@ class Agenda extends React.Component {
 
   onSliceTitleChange = (slice, title) => {
     const slices = this.state.slices;
-    //const foundSlice = this.state.slices.find(stateSlice => stateSlice.id == slice.id)
     const foundIndex = slices.findIndex(x => x.id == slice.id);
     if (foundIndex === -1) {
       return;

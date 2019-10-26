@@ -14,9 +14,8 @@ class Admin extends React.Component {
     agenda: null,
     title: null,
     startTime: moment()
-      .minutes(0)
       .seconds(0)
-      .add('hours', 1)
+      .add('minutes', 1)
       .format(DATE_FORMAT),
     titleError: null,
     timeError: null,
@@ -41,7 +40,7 @@ class Admin extends React.Component {
       this.setState({
         title: currentMeeting.title,
         agenda: currentMeeting.agenda,
-        startTime: moment(currentMeeting.startTime),
+        startTime: moment(currentMeeting.startTime).format(DATE_FORMAT),
         teamId: currentMeeting.teamId
       });
     }
@@ -94,7 +93,6 @@ class Admin extends React.Component {
       startTime: this.props.currentMeeting
         ? this.props.currentMeeting.startTime
         : moment()
-            .add('seconds', 10)
             .format(DATE_FORMAT)
             .toString(),
       teamId
