@@ -20,7 +20,6 @@ const Done = styled.div`
 
 const Client = ({ socket, currentMeeting, token, sensorData }) => {
   const [timeElapsed, setTimeElapsed] = useState(0);
-  let interval;
 
   const runHooks = (meeting, timeElapsed) => {
     if (!meeting) {
@@ -36,7 +35,7 @@ const Client = ({ socket, currentMeeting, token, sensorData }) => {
   };
 
   useEffect(() => {
-    interval = setInterval(() => {
+    const interval = setInterval(() => {
       setTimeElapsed(
         currentMeeting
           ? moment().diff(moment(currentMeeting.startTime, DATE_FORMAT))
@@ -44,6 +43,7 @@ const Client = ({ socket, currentMeeting, token, sensorData }) => {
       );
       runHooks(currentMeeting, timeElapsed);
     }, 1000);
+    return () => clearInterval(interval);
   }, [currentMeeting]);
 
   const meetingReady = meeting => {
