@@ -6,48 +6,8 @@ import Agenda from '../components/Agenda';
 import moment from 'moment';
 import styled from 'styled-components';
 import MiniHeader from '../components/MiniHeader';
-
-const test = {
-  id: 1,
-  title: 'Scrum Retrospective',
-  startTime: '2019-10-25 20:00:00',
-  description:
-    'Post Scrum meeting facilitated by the Scrum Master where the team discusses the just-concluded sprint and determines what could be changed that might make the next sprint more productive.',
-  agenda: [
-    {
-      id: 1,
-      title: 'Set the stage',
-      description:
-        "Welcome everyone to the retrospective meeting and establish the rules of engagement:\nEmbrace a positive spirit of continuous improvement and share whatever you think will help the team improve.\nDon't make it personal, don't take it personally.\nListen with an open mind, and remember that everyone's experience is valid (even those you don't share).\nSet the boundary of your discussion – is it that last sprint? the last quarter? since the project started? Be clear how far back you're going to go.\nEncourage the team to embrace an improvement mindset, away from blame.",
-      duration: 30,
-      color: '#6c5ce7'
-    },
-    {
-      id: 2,
-      title: 'What went well?',
-      description:
-        'Start the session on a positive note. Have each team member use green sticky notes to write down what they feel went well (one idea per sticky). As people post their stickies on the whiteboard, the facilitator should group similar or duplicate ideas together.\n\nDiscuss your ideas briefly as a team.',
-      duration: 40,
-      color: '#00b894'
-    },
-    {
-      id: 3,
-      title: 'What needs improvement?',
-      description:
-        'Same structure as above, but using pink or red stickies. Remind your team that this is about actions and outcomes – not about specific people.',
-      duration: 15,
-      color: '#fd79a8'
-    },
-    {
-      id: 4,
-      title: 'Next steps',
-      description:
-        "Having identified what didn't go so well, what concrete actions can the team take to improve those things? Have your team use blue sticky notes to place ideas on the board. Group them and then discuss as a team, agree to which actions you will take, assign owners and a due date to get them DONE.\n\nThank everyone for their involvement and their honesty. Quickly run through the list of follow-up items, their owners and due dates.",
-      duration: 15,
-      color: '#fab1a0'
-    }
-  ]
-};
+import { timeLeftSlice } from '../utils/hooks';
+import { DATE_FORMAT } from '../config';
 
 const Done = styled.div`
   position: absolute;
@@ -58,22 +18,35 @@ const Done = styled.div`
   height: ${props => (props.timeElapsed / 60000 / props.totalDuration) * 100}%;
 `;
 
-const Client = ({ currentMeeting, token, sensorData }) => {
+const Client = ({ socket, currentMeeting, token, sensorData }) => {
   const [timeElapsed, setTimeElapsed] = useState(0);
   let interval;
 
+  const runHooks = (meeting, timeElapsed) => {
+    if (!meeting) {
+      return;
+    }
+    meeting.agenda.forEach(slice => {
+      console.log(slice);
+      if (10 > timeLeftSlice(meeting, slice.id) > 9) {
+        socket.emit('sliceEnd', slice.title);
+      }
+    });
+  };
+
   useEffect(() => {
-    interval = setInterval(
-      () =>
-        setTimeElapsed(
-          currentMeeting ? moment().diff(moment(currentMeeting.startTime)) : 0
-        ),
-      1000
-    );
+    interval = setInterval(() => {
+      setTimeElapsed(
+        currentMeeting
+          ? moment().diff(moment(currentMeeting.startTime, DATE_FORMAT))
+          : 0
+      );
+      runHooks(currentMeeting, timeElapsed);
+    }, 1000);
   }, []);
 
   const meetingReady = meeting => {
-    return meeting && moment().isAfter(moment(meeting.startTime));
+    return meeting && moment().isAfter(moment(meeting.startTime, DATE_FORMAT));
   };
   const totalDuration = currentMeeting
     ? currentMeeting.agenda.reduce((a, b) => a + b.duration, 0)
